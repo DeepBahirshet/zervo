@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Requirement;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class RequirementController extends Controller
 {
@@ -11,6 +12,13 @@ class RequirementController extends Controller
     {
         return response()->json([
             'data' => Requirement::latest()->get(),
+        ]);
+    }
+
+    public function show(Requirement $requirement)
+    {
+        return Inertia::render('Requirements/Show', [
+            'requirement' => $requirement,
         ]);
     }
 }

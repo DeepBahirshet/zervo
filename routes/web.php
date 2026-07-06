@@ -25,5 +25,6 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Requirements/Index');       
     })->name('requirements.index');
 
-    Route::get('/requirements_test', [RequirementController::class, 'index']);
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    
 });

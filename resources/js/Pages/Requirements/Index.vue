@@ -1,16 +1,18 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 const loading = ref(false);
 const requirements = ref([]);
+const error = ref('');
 
 const fetchRequirements = async () => {
    loading.value = true;
 
    try {
-    const {data} = await axios.get('requirements_test');
+    const {data} = await axios.get('api/requirements');
 
     requirements.value = data.data;
 
@@ -61,11 +63,12 @@ onMounted(fetchRequirements);
                         </span>
                     </div>
 
-                    <button
-                        class="mt-5 w-full rounded-md bg-amber-500 py-2 text-white hover:bg-amber-600"
+                    <Link
+                        :href="route('requirements.show', requirement.id)"
+                        class="mt-5 block w-full rounded-md bg-amber-500 py-2 text-center  text-white hover:bg-amber-600"
                     >
                         View Details
-                    </button>
+                  </Link>
                 </div>
             </div>
         </div>

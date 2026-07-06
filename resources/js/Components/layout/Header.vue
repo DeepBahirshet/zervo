@@ -3,7 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
 
-const isActive = (path) => page.url.startsWith(path);
+const isActive = (path) => page.url.startsWith('/'+ path);
 
 </script>
 
@@ -24,7 +24,7 @@ const isActive = (path) => page.url.startsWith(path);
                     :href="route('requirements.index')"
                     :class="[
                         'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                        isActive('/requirements')
+                        isActive('requirements')
                             ? 'bg-amber-500 text-white'
                             : 'text-gray-700 hover:bg-gray-100 hover:text-amber-500'
                     ]"
@@ -33,15 +33,19 @@ const isActive = (path) => page.url.startsWith(path);
                 </Link>
 
                 <Link
-                    href="#"
-                    class="text-sm font-medium text-gray-700 hover:text-amber-500"
+                    :href="route('profile')"
+                    :class="['rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                            isActive('profile') 
+                            ? 'bg-amber-500 text-white'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-amber-500'
+                    ]"
                 >
                     Profile
                 </Link>
 
                 <Link
                     :href="route('logout')"
-                    class="text-sm font-medium text-gray-700 hover:text-amber-500"
+                    class="rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-100 text-gray-700 hover:text-amber-500"
                 >
                     Logout
                 </Link>
