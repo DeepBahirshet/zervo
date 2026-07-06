@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,7 +18,12 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/requirements', function() {
         return Inertia::render('Requirements/Index');       
     })->name('requirements.index');
+
+    Route::get('/requirements_test', [RequirementController::class, 'index']);
 });

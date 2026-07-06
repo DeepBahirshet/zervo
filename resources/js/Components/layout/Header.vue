@@ -1,5 +1,10 @@
 <script setup>
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3';
+
+const page = usePage();
+
+const isActive = (path) => page.url.startsWith(path);
+
 </script>
 
 <template>
@@ -17,7 +22,12 @@ import { Link } from '@inertiajs/vue3'
             <nav class="flex items-center gap-6">
                 <Link
                     :href="route('requirements.index')"
-                    class="text-sm font-medium text-gray-700 hover:text-amber-500"
+                    :class="[
+                        'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                        isActive('/requirements')
+                            ? 'bg-amber-500 text-white'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-amber-500'
+                    ]"
                 >
                     Requirements
                 </Link>
@@ -30,7 +40,7 @@ import { Link } from '@inertiajs/vue3'
                 </Link>
 
                 <Link
-                    href="#"
+                    :href="route('logout')"
                     class="text-sm font-medium text-gray-700 hover:text-amber-500"
                 >
                     Logout

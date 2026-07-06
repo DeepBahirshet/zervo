@@ -46,4 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function requirements()
+    {
+        return $this->hasMany(Requirement::class);
+    }
 }
