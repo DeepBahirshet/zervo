@@ -92,22 +92,27 @@ const submit = () => {
                 />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <Link
+                        :href="route('login')"
+                        class="font-semibold text-yellow-600 hover:text-yellow-700">
+                        Log in
+                    </Link>
+                </p>
+            </div>
 
+            <div class="mt-4">
                 <PrimaryButton
-                    class="ms-4"
+                    class="w-full justify-center"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Register
                 </PrimaryButton>
             </div>
+
         </form>
     </GuestLayout>
 </template>
