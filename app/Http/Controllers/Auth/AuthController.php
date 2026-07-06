@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('login');
+        return redirect()->route('requirements.index');
     }
 
     public function showRegister(): Response {
