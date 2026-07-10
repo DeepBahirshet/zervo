@@ -10,11 +10,14 @@ class RequirementController extends Controller
 {
     public function index()
     {
-        return response()->json([
-            'data' => Requirement::latest()->get(),
-        ]);
+        return Inertia::render('Requirements/Index');
     }
 
+    public function create()
+    {
+        return Inertia::render('Requirements/Create');
+    }
+    
     public function show(Requirement $requirement)
     {
         return Inertia::render('Requirements/Show', [

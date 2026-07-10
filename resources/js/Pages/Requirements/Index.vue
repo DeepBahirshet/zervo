@@ -12,6 +12,7 @@ const fetchRequirements = async () => {
    loading.value = true;
 
    try {
+
     const {data} = await axios.get('api/requirements');
 
     requirements.value = data.data;
@@ -35,11 +36,12 @@ onMounted(fetchRequirements);
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-3xl font-bold">Requirements</h1>
 
-                <button
+                <Link
+                    :href="route('requirements.create')"
                     class="rounded-md bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
                 >
                     Post Requirement
-                </button>
+                </Link>
             </div>
 
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
