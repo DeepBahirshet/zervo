@@ -23,9 +23,6 @@ class CreateController extends Controller
             'status' => 'open',
         ]);
 
-        return response()->json([
-            'message' => 'Requirement posted successfully.',
-            'data' => $requirement,
-        ], 201);
+        return redirect()->route('requirements.index')->with('success', 'Requirement posted successfully.');
     }
 }

@@ -20,7 +20,14 @@ class RequirementController extends Controller
     
     public function show(Requirement $requirement)
     {
-        return Inertia::render('Requirements/Show', [
+        if($requirement->user_id === auth()->id())
+        {
+            return Inertia::render('Requirements/OwnerShow', [
+                'requirement' => $requirement
+            ]);
+        }
+
+        return Inertia::render('Requirements/ProviderShow', [
             'requirement' => $requirement,
         ]);
     }

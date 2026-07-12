@@ -1,9 +1,14 @@
 <script setup>
+import ApplyRequirementModal from '@/Components/Requirements/ApplyRequirementModal.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { ref } from 'vue';
 
 defineProps({
     requirement: Object
-})
+});
+
+const showApplyModal = ref(false);
+
 </script>
 
 <template>
@@ -24,10 +29,12 @@ defineProps({
             </div>
 
             <button
+                @click="showApplyModal = true"
                 class="mt-8 rounded-md bg-amber-500 px-6 py-3 text-white hover:bg-amber-600"
             >
                 Apply
             </button>
         </div>
+        <ApplyRequirementModal @close="showApplyModal = false" :requirementId="requirement.id" :show="showApplyModal" />
     </AuthenticatedLayout>
 </template>

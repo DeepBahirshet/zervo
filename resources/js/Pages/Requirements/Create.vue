@@ -5,6 +5,7 @@ import { useForm } from '@inertiajs/vue3';
 import { RequirementSchema } from '@/Schemas/RequirementSchema';
 import InputError from '@/Components/InputError.vue';
 import { getFormErrors } from '@/Utils/validation';
+import { toast } from 'vue-sonner';
 
 const form = useForm({
     title: '',
@@ -30,7 +31,14 @@ const submit = () => {
 
     form.clearErrors();
 
-    form.post(route('requirements.store'));
+    form.post(route('api.requirements.store'), {
+        onSuccess: () => {
+            toast.success('Requirement posted successfully!');
+        },
+        onError: () => {
+            toast.error('Something went wrong!');
+        }
+    });
 
 
 }

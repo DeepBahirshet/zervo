@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequirementRequest extends FormRequest
+class ApplicationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,10 @@ class RequirementRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'min:20', 'max:1000'],
-            'budget' => ['required', 'numeric', 'min:1'],
-            'location' => ['required', 'string', 'max:255'],
+         return [
+            'message' => ['required', 'string', 'max:1000'],
+            'quoted_price' => ['required', 'numeric', 'min:1'],
+            'estimated_days' => ['required', 'integer', 'min:1'],
         ];
     }
 }

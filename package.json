@@ -21,6 +21,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "vue-sonner": "^2.0.9",
         "zod": "^4.4.3"
     }
 }
