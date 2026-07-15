@@ -24,10 +24,10 @@ class StoreController extends Controller
             ], 422);
         }
 
-        $alreadyApplied = Application::where([
-            'requirement_id' => $requirement->id,
-            'user_id' => $request->user()->id,
-        ])->exists();
+        $alreadyApplied = Application::query()
+        ->where('requirement_id', $requirement->id)
+        ->where('user_id', $request->user()->id)
+        ->exists();
 
         if ($alreadyApplied) {
             return response()->json([
@@ -44,6 +44,8 @@ class StoreController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect('');
+        return response()->json([
+                'message' => 'Application Successfully submitted.'
+            ], 200);
     }
 }

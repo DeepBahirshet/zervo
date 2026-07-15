@@ -22,13 +22,19 @@ class RequirementController extends Controller
     {
         if($requirement->user_id === auth()->id())
         {
+
+            $requirement->load(['applications.user']);
+
             return Inertia::render('Requirements/OwnerShow', [
                 'requirement' => $requirement
             ]);
         }
 
+        $hasApplied = $requirement->applications()->where('user_id', auth()->id())->exists();
+
         return Inertia::render('Requirements/ProviderShow', [
             'requirement' => $requirement,
+            'hasApplied' => $hasApplied
         ]);
     }
 }

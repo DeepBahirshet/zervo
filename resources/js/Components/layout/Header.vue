@@ -20,6 +20,20 @@ const isActive = (path) => page.url.startsWith('/'+ path);
 
             <!-- Navigation -->
             <nav class="flex items-center gap-6">
+
+                <Link
+                    v-if="$page.props.auth.user.is_admin"
+                    :href="route('admin.index')"
+                    :class="[
+                        'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                        isActive('admin')
+                            ? 'bg-amber-500 text-white'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-amber-500'
+                    ]"
+                >
+                    Admin
+                </Link>
+
                 <Link
                     :href="route('requirements.index')"
                     :class="[

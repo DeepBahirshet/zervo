@@ -5,6 +5,7 @@ import { getFormErrors } from '@/Utils/validation';
 import { ApplicationSchema } from '@/Schemas/ApplicationSchema';
 import ApplicationService from '@/Services/ApplicationService';
 import { toast } from 'vue-sonner';
+import { ref } from 'vue';
 
 const props = defineProps({
     show: {
@@ -14,10 +15,16 @@ const props = defineProps({
     requirementId: {
         type: Number,
         required: true
+    },
+    isApplied: {
+        type: Boolean,
+        required: false
     }
 })
 
-const emit = defineEmits(['close', 'submit'])
+const isApplied = ref(props.isApplied);
+
+const emit = defineEmits(['close', 'isApplied'])
 
 const form = useForm({
     message: '',
@@ -55,7 +62,7 @@ const submit = async() => {
         )
 
         toast.success('Application submitted successfully.')
-
+        emit('isApplied');
         closeModal()
 
     } catch (error) {
