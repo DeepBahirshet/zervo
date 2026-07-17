@@ -23,11 +23,13 @@ return new class extends Migration
             $table->string('location')->nullable();
 
             $table->enum('status', [
+                'pending',
                 'open',
                 'in_progress',
                 'completed',
-                'cancelled'
-            ])->default('open');
+                'cancelled',
+                'rejected'
+            ])->default('pending');
 
             $table->timestamps();
         });

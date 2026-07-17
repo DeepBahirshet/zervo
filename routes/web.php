@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminIndexController;
+use App\Http\Controllers\Admin\Requirements\IndexController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
@@ -40,5 +41,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('/index', AdminIndexController::class)
             ->name('index');
+
+        Route::get('/requirements', IndexController::class)->name('requirements.index');
 
     });

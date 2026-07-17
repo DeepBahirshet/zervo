@@ -13,7 +13,7 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return response()->json(['data' => Requirement::latest()->get(),
+        return response()->json(['data' => Requirement::where('status', 'open')->latest()->get(),
         ]);
     }
 }

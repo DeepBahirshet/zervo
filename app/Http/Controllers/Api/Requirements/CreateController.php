@@ -20,7 +20,7 @@ class CreateController extends Controller
             'description' => $request->description,
             'budget' => $request->budget,
             'location' => $request->location,
-            'status' => 'open',
+            'status' => 'pending',
         ]);
 
         return redirect()->route('requirements.index')->with('success', 'Requirement posted successfully.');

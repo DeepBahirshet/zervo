@@ -15,13 +15,6 @@ class IndexController extends Controller
      */
     public function __invoke(): Response
     {
-        $requirements = Requirement::with('user')
-            ->where('status', 'pending')
-            ->latest()
-            ->get();
-
-        return Inertia::render('Admin/Requirements/Index', [
-            'requirements' => $requirements,
-        ]);
+        return Inertia::render('Admin/Requirements/Index');
     }
 }

@@ -14,7 +14,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
             <div class="grid gap-6 md:grid-cols-3">
 
                 <Link
-                    href="#"
+                    :href="route('admin.requirements.index')"
                     class="rounded-lg bg-white p-6 shadow hover:shadow-lg transition"
                 >
                     <h2 class="text-xl font-semibold">
