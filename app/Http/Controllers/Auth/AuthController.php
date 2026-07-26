@@ -41,6 +41,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => $request->password
         ]);
 
@@ -63,14 +64,7 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        return Inertia::render('Profile/Index', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    public function profile1(Request $request)
-    {
-        return Inertia::render('Profile/Index', [
+        return Inertia::render('Profile/Show', [
             'user' => $request->user(),
         ]);
     }

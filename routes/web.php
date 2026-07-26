@@ -13,6 +13,7 @@ Route::middleware('guest')->group(function() {
         return Inertia::render('Auth/Login');
     });
 
+    // use web routes for session based auth
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'showRegister']);
