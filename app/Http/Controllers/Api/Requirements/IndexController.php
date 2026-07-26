@@ -13,7 +13,9 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return response()->json(['data' => Requirement::where('status', 'open')->latest()->get(),
+        $status = request('status', 'approved');
+
+        return response()->json(['data' => Requirement::where('status', $status)->latest()->get(),
         ]);
     }
 }

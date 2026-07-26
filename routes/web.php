@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     ->name('requirements.show');
 
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
+    Route::get('/applications', App\Http\Controllers\Applications\IndexController::class)->name('applications.index');
     
 });
 

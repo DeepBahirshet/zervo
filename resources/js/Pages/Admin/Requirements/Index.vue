@@ -1,34 +1,51 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import RequirementService from '@/Services/RequirementService';
-import { Link } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import RequirementService from "@/Services/RequirementService";
+import { Link } from "@inertiajs/vue3";
+import { computed, onMounted, ref } from "vue";
+import { toast } from "vue-sonner";
 
 const requirements = ref([]);
-const status = ref('pending');
+const status = ref("pending");
+const loading = ref(false);
 
 const fetchRequirements = async () => {
-    const {data} = await RequirementService.index(status.value);
+    loading.value = true;
+    const { data } = await RequirementService.index(status.value);
     requirements.value = data.data;
-}
+    loading.value = false;
+};
 
 const changeStatus = async (value) => {
     status.value = value;
     await fetchRequirements();
 };
 
+const emptyMessage = computed(() => {
+    switch (status.value) {
+        case "pending":
+            return "No pending requirements found.";
+
+        case "approved":
+            return "No approved requirements found.";
+
+        case "cancelled":
+            return "No rejected requirements found.";
+
+        default:
+            return "No requirements found.";
+    }
+});
+
 const approve = async (requirement) => {
     try {
         await RequirementService.approve(requirement.id);
 
-        toast.success('Requirement approved successfully.');
+        toast.success("Requirement approved successfully.");
 
         await fetchRequirements();
     } catch (error) {
-        toast.error(
-           'Failed to approve requirement.'
-        );
+        toast.error("Failed to approve requirement.");
     }
 };
 
@@ -36,28 +53,22 @@ const reject = async (requirement) => {
     try {
         await RequirementService.reject(requirement.id);
 
-        toast.success('Requirement rejected successfully.');
+        toast.success("Requirement rejected successfully.");
 
         await fetchRequirements();
     } catch (error) {
-        toast.error(
-            'Failed to reject requirement.'
-        );
+        toast.error("Failed to reject requirement.");
     }
 };
 
 onMounted(fetchRequirements);
-
 </script>
 
 <template>
     <AuthenticatedLayout>
         <div class="mx-auto max-w-7xl py-8">
-
             <div class="mb-8 flex items-center justify-between">
-                <h1 class="text-3xl font-bold">
-                    Pending Requirements
-                </h1>
+                <h1 class="text-3xl font-bold">Requirements</h1>
 
                 <Link
                     :href="route('admin.index')"
@@ -67,40 +78,87 @@ onMounted(fetchRequirements);
                 </Link>
             </div>
 
+            <div class="mb-6 flex gap-3">
+                <button
+                    @click="changeStatus('pending')"
+                    :class="[
+                        'rounded-md px-4 py-2',
+                        status === 'pending'
+                            ? 'bg-yellow-500 text-white'
+                            : 'bg-gray-200',
+                    ]"
+                >
+                    Pending
+                </button>
+
+                <button
+                    @click="changeStatus('approved')"
+                    :class="[
+                        'rounded-md px-4 py-2',
+                        status === 'approved'
+                            ? 'bg-green-600 text-white'
+                            : 'bg-gray-200',
+                    ]"
+                >
+                    Approved
+                </button>
+
+                <button
+                    @click="changeStatus('cancelled')"
+                    :class="[
+                        'rounded-md px-4 py-2',
+                        status === 'cancelled'
+                            ? 'bg-red-600 text-white'
+                            : 'bg-gray-200',
+                    ]"
+                >
+                    Rejected
+                </button>
+            </div>
+
             <div class="overflow-hidden rounded-lg bg-white shadow">
-
                 <table class="min-w-full divide-y divide-gray-200">
-
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-semibold uppercase"
+                            >
                                 Title
                             </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-semibold uppercase"
+                            >
                                 Owner
                             </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-semibold uppercase"
+                            >
                                 Budget
                             </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-semibold uppercase"
+                            >
                                 Location
                             </th>
 
-                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-left text-xs font-semibold uppercase"
+                            >
                                 Status
                             </th>
 
-                            <th class="px-6 py-3 text-right text-xs font-semibold uppercase">
+                            <th
+                                class="px-6 py-3 text-right text-xs font-semibold uppercase"
+                            >
                                 Actions
                             </th>
                         </tr>
                     </thead>
 
                     <tbody class="divide-y divide-gray-200">
-
                         <tr
                             v-for="requirement in requirements"
                             :key="requirement.id"
@@ -114,14 +172,12 @@ onMounted(fetchRequirements);
                                     {{ requirement.description }}
                                 </div>
                             </td>
-                            
+
                             <td class="px-6 py-4">
                                 {{ requirement.user.name }}
                             </td>
 
-                            <td class="px-6 py-4">
-                                ₹{{ requirement.budget }}
-                            </td>
+                            <td class="px-6 py-4">₹{{ requirement.budget }}</td>
 
                             <td class="px-6 py-4">
                                 {{ requirement.location }}
@@ -136,14 +192,24 @@ onMounted(fetchRequirements);
                             </td>
 
                             <td class="px-6 py-4 text-right">
-
                                 <div class="flex justify-end gap-2">
-
                                     <button
                                         @click="approve(requirement)"
-                                        class="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                                        :disabled="
+                                            requirement.status === 'approved'
+                                        "
+                                        :class="[
+                                            'rounded-md px-4 py-2 text-white',
+                                            requirement.status === 'approved'
+                                                ? 'cursor-not-allowed bg-green-300'
+                                                : 'bg-green-600 hover:bg-green-700',
+                                        ]"
                                     >
-                                        Approve
+                                        {{
+                                            requirement.status === "approved"
+                                                ? "Approved"
+                                                : "Approve"
+                                        }}
                                     </button>
 
                                     <button
@@ -154,16 +220,12 @@ onMounted(fetchRequirements);
                                     </button>
 
                                     <Link
-                                       
                                         class="rounded-md border px-4 py-2 hover:bg-gray-100"
                                     >
                                         View
                                     </Link>
-
                                 </div>
-
                             </td>
-
                         </tr>
 
                         <tr v-if="requirements.length === 0">
@@ -171,16 +233,12 @@ onMounted(fetchRequirements);
                                 colspan="6"
                                 class="py-10 text-center text-gray-500"
                             >
-                                No pending requirements found.
+                                {{ loading ? 'Loading...' : emptyMessage }}
                             </td>
                         </tr>
-
                     </tbody>
-
                 </table>
-
             </div>
-
         </div>
     </AuthenticatedLayout>
 </template>

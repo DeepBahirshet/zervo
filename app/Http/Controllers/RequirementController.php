@@ -30,11 +30,17 @@ class RequirementController extends Controller
             ]);
         }
 
-        $hasApplied = $requirement->applications()->where('user_id', auth()->id())->exists();
+        $requirement = $requirement->load('user');
+        
+        $application = $requirement->applications()->where('user_id', auth()->id())->first();
+
+        $hasApplied = !empty($application);
+
 
         return Inertia::render('Requirements/ProviderShow', [
             'requirement' => $requirement,
-            'hasApplied' => $hasApplied
+            'hasApplied' => $hasApplied,
+            'application' => $application
         ]);
     }
 }

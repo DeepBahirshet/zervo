@@ -24,7 +24,7 @@ class AcceptController extends Controller
 
             $requirement->applications()->whereKeyNot($application->id)->where('status', 'pending')->update(['status' => 'rejected']);
 
-            $requirement->update(['status' => 'in_progress']);
+            $requirement->update(['work_status' => 'in_progress']);
         });
 
         return response()->json([

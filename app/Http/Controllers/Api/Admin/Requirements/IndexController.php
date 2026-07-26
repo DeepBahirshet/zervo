@@ -14,7 +14,8 @@ class IndexController extends Controller
      */
     public function __invoke(): JsonResponse
     {
-        $requirement = Requirement::with('user')->where('status', 'pending')->latest()->get();
+        $status = request('status', 'pending');
+        $requirement = Requirement::with('user')->where('status', $status)->latest()->get();
 
         return response()->json(['data' => $requirement]);
     }

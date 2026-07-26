@@ -15,7 +15,7 @@ class ApproveController extends Controller
     public function __invoke(Requirement $requirement): JsonResponse
     {
         $requirement->update([
-            'status' => 'open',
+            'status' => 'approved',
         ]);
 
         return response()->json([

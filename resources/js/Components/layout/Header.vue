@@ -46,6 +46,18 @@ const isActive = (path) => page.url.startsWith('/'+ path);
                     Requirements
                 </Link>
 
+                <Link 
+                    :href="route('applications.index')"
+                    :class="[
+                        'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                        isActive('applications')
+                        ? 'bg-amber-500 text-white'
+                        :'text-gray-700 hover:bg-gray-100 hover:text-amber-500'
+                    ]"
+                >
+                    My Applications
+                </Link>
+
                 <Link
                     :href="route('profile')"
                     :class="['rounded-md px-3 py-2 text-sm font-medium transition-colors',

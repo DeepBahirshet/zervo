@@ -1,18 +1,27 @@
-import axios from "axios";
+import api from "./api";
 
 export default {
-    index()
+    index(status = 'pending')
     {
-        return axios.get(`/api/admin/requirements`);
+        return api.get(`/admin/requirements`, {
+            params: {
+                status,
+            }
+        });
     },
 
     approve(id)
     {
-        return axios.patch(`/api/admin/requirements/${id}/approve`);
+        return api.patch(`/admin/requirements/${id}/approve`);
     },
 
     reject(id)
     {
-        return axios.patch(`/api/admin/requirements/${id}/reject`);
+        return api.patch(`/admin/requirements/${id}/reject`);
+    },
+
+    complete(id)
+    {
+        return api.post(`/requirements/${id}/complete`);
     }
 }

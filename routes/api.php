@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\Requirements\ApproveController;
 use App\Http\Controllers\Api\Applications\StoreController;
+use App\Http\Controllers\Api\Requirements\CompleteController;
 use App\Http\Controllers\Api\Requirements\CreateController;
 use App\Http\Controllers\Api\Requirements\IndexController;
 use App\Http\Controllers\Api\Admin\Requirements\IndexController as AdminRequirementIndexController;
@@ -16,7 +17,11 @@ Route::middleware('auth:sanctum')->name('api.')->group(function() {
     
     Route::post('/requirements', CreateController::class)->name('requirements.store');
 
+    Route::post('/requirements/{requirement}/complete', CompleteController::class)->name('requirements.complete');
+
     Route::post('/requirements/{requirement}/apply', StoreController::class)->name('requirements.apply');
+
+    Route::get('/applications', \App\Http\Controllers\Api\Applications\IndexController::class)->name('applications.index');
 
     Route::patch('/applications/{application}/accept', AcceptController::class);
     

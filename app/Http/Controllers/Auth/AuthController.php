@@ -68,4 +68,11 @@ class AuthController extends Controller
         ]);
     }
 
+    public function profile1(Request $request)
+    {
+        return Inertia::render('Profile/Index', [
+            'user' => $request->user(),
+        ]);
+    }
+
 }

@@ -17,6 +17,7 @@ class Requirement extends Model
         'budget',
         'location',
         'status',
+        'work_status'
     ];
 
     public function user()
