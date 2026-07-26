@@ -3,10 +3,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import ApplicationService from "@/Services/ApplicationService";
 import RequirementService from "@/Services/RequirementService";
 import { toast } from "vue-sonner";
+import ReviewModal from "@/Components/Review/ReviewModal.vue";
+import { ref } from "vue";
 
 const props = defineProps({
     requirement: Object,
 });
+
+const showReviewModal = ref(false); 
 
 const accept = async (application) => {
     try {
@@ -42,13 +46,11 @@ const reject = async (application) => {
 
 const markCompleted = async () => {
     try {
-        await RequirementService.complete(props.requirement.id);
 
-        props.requirement.work_status = "completed";
+        showReviewModal.value = true;
 
-        toast.success("Project marked as completed.");
     } catch (error) {
-        toast.error("Failed to complete project.");
+        toast.error("Failed to give rating.");
     }
 };
 
@@ -70,6 +72,12 @@ const workStatus = (status) => {
             return "Open";
     }
 };
+
+const reviewSubmitted = () => {
+    props.requirement.work_status = "completed";
+    props.requirement.review = true;
+}
+
 </script>
 
 <template>
@@ -279,6 +287,16 @@ const workStatus = (status) => {
                                 ✓ Project Completed
                             </span>
 
+                            <span
+    v-if="
+        application.status === 'accepted' &&
+        requirement.review
+    "
+    class="rounded bg-green-100 px-4 py-2 text-green-700"
+>
+    ⭐ Review Submitted
+</span>
+
                         </div>
 
                     </div>
@@ -293,6 +311,13 @@ const workStatus = (status) => {
                 </div>
 
             </div>
+
+            <ReviewModal
+                :show="showReviewModal"
+                :requirement-id="requirement.id"
+                @close="showReviewModal = false"
+                @submitted="reviewSubmitted"
+            />
 
         </div>
     </AuthenticatedLayout>

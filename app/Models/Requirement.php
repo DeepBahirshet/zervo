@@ -29,4 +29,9 @@ class Requirement extends Model
     {
         return $this->hasMany(Application::class);
     }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
 }

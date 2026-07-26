@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->name('api.')->group(function() {
     
     Route::patch('/applications/{application}/reject', RejectController::class);
 
+    Route::post('/requirements/{requirement}/review', \App\Http\Controllers\Api\Reviews\StoreController::class);
+
     Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
