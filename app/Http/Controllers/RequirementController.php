@@ -20,6 +20,7 @@ class RequirementController extends Controller
     
     public function show(Requirement $requirement)
     {
+        $requirement->load(['images']);
         if($requirement->user_id === auth()->id())
         {
 

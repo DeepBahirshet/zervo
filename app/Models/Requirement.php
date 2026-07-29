@@ -34,4 +34,9 @@ class Requirement extends Model
     {
         return $this->hasOne(Review::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(RequirementImage::class);
+    }
 }

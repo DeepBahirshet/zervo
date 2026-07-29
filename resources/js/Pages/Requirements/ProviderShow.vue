@@ -49,6 +49,19 @@ const requirementStatus = (status) => {
                 {{ requirement.title }}
             </h1>
 
+            <div
+                v-if="requirement.images && requirement.images.length"
+                class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3"
+            >
+                <img
+                    v-for="image in requirement.images"
+                    :key="image.id"
+                    :src="`/storage/${image.image}`"
+                    :alt="requirement.title"
+                    class="h-48 w-full rounded-lg border object-cover transition hover:scale-105"
+                />
+            </div>
+
             <p class="mt-4 text-gray-700">
                 {{ requirement.description }}
             </p>

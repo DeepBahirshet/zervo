@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Application;
 use App\Models\Requirement;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -40,7 +41,6 @@ class DemoSeeder extends Seeder
                     'email' => $customer['email'],
                     'phone' => fake()->numerify('98########'),
                     'password' => Hash::make('password'),
-                    'role' => 'customer',
                 ])
             );
         }
@@ -86,7 +86,6 @@ class DemoSeeder extends Seeder
                     'email' => 'provider' . ($index + 1) . '@example.com',
                     'phone' => fake()->numerify('97########'),
                     'password' => Hash::make('password'),
-                    'role' => 'provider',
                 ])
             );
         }
@@ -248,5 +247,129 @@ class DemoSeeder extends Seeder
             }
 
         }
+
+        $requirements = Requirement::with('applications')->get();
+
+        foreach ($requirements as $requirement) {
+
+            if ($requirement->applications->isEmpty()) {
+                continue;
+            }
+
+            // Random overall work status
+            $workStatus = fake()->randomElement([
+                'open',
+                'in_progress',
+                'completed',
+            ]);
+
+            // Default requirement status
+            $requirementStatus = 'approved';
+
+            if ($workStatus === 'completed') {
+                $requirementStatus = 'completed';
+            }
+
+            if ($workStatus === 'cancelled') {
+                $requirementStatus = 'cancelled';
+            }
+
+            $requirement->update([
+                'status' => $requirementStatus,
+                'work_status' => $workStatus,
+            ]);
+
+            // If requirement is open, keep every application pending
+            if ($workStatus === 'open') {
+                continue;
+            }
+
+            // Pick one provider as approved
+            $approvedApplication = $requirement->applications->random();
+
+            $approvedApplication->update([
+                'status' => 'accepted',
+            ]);
+
+            // Randomly reject some remaining applications
+            foreach ($requirement->applications as $application) {
+
+                if ($application->id === $approvedApplication->id) {
+                    continue;
+                }
+
+                $application->update([
+                    'status' => fake()->randomElement([
+                        'pending',
+                        'pending',
+                        'pending',
+                        'rejected',
+                        'rejected',
+                    ]),
+                ]);
+            }
+
+            // If requirement was cancelled,
+            // nobody should remain approved
+            if ($workStatus === 'cancelled') {
+
+                foreach ($requirement->applications as $application) {
+
+                    $application->update([
+                        'status' => 'rejected',
+                    ]);
+                }
+            }
+        }
+
+        // review 
+
+        $reviews = [
+
+            "Excellent work. Very professional and completed everything on time.",
+
+            "Highly satisfied with the quality of service. Would definitely hire again.",
+
+            "Very skilled and polite. The work exceeded my expectations.",
+
+            "Completed the work within budget and before the promised deadline.",
+
+            "Professional service with great attention to detail.",
+
+            "Good communication throughout the project. Highly recommended.",
+
+            "Reasonable pricing and quality workmanship. Happy with the result.",
+
+            "Arrived on time and finished the job neatly. Great experience.",
+
+            "Reliable and trustworthy professional. Will recommend to friends.",
+
+            "Very responsive and completed the work exactly as discussed.",
+
+        ];
+
+        $completedRequirements = Requirement::with('applications')
+            ->where('work_status', 'completed')
+            ->get();
+
+        foreach ($completedRequirements as $requirement) {
+
+            $approvedApplication = $requirement->applications
+                ->where('status', 'accepted')
+                ->first();
+
+            if (!$approvedApplication) {
+                continue;
+            }
+
+            Review::create([
+                'requirement_id' => $requirement->id,
+                'owner_id' => $requirement->user_id,
+                'provider_id' => $approvedApplication->user_id,
+                'rating' => rand(4, 5),
+                'review' => fake()->randomElement($reviews),
+            ]);
+        }
     }
+
 }

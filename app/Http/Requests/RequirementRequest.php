@@ -25,6 +25,8 @@ class RequirementRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'min:20', 'max:1000'],
+            'images' => ['nullable', 'array', 'max:5'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'budget' => ['required', 'numeric', 'min:1'],
             'location' => ['required', 'string', 'max:255'],
         ];

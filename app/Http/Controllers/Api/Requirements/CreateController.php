@@ -21,7 +21,23 @@ class CreateController extends Controller
             'budget' => $request->budget,
             'location' => $request->location,
             'status' => 'pending',
+            'work_status' => 'open',
         ]);
+
+        if ($request->hasFile('images')) {
+            $imageData = [];
+
+            $folderPath = 'requirements/' . $requirement->id;
+
+            foreach ($request->file('images') as $image) {
+                $imageData[] = [
+                    
+                    'image' => $image->store($folderPath, 'public'),
+                ];
+            }
+
+            $requirement->images()->createMany($imageData);
+        }
 
         return redirect()->route('requirements.index')->with('success', 'Requirement posted successfully.');
     }
