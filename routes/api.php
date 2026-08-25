@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\Requirements\ApproveController;
+use App\Http\Controllers\AI\ApplicationAnalysisController;
 use App\Http\Controllers\Api\Applications\StoreController;
-use App\Http\Controllers\Api\Auth\RegisteredUserController;
 use App\Http\Controllers\Api\Profile\UpdatePhotoController;
 use App\Http\Controllers\Api\Requirements\CompleteController;
 use App\Http\Controllers\Api\Requirements\CreateController;
@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->name('api.')->group(function() {
     Route::post('/requirements/{requirement}/review', \App\Http\Controllers\Api\Reviews\StoreController::class);
 
     Route::post('/profile/photo', UpdatePhotoController::class);
+
+    Route::post('/requirements/{requirement}/ai-analysis', ApplicationAnalysisController::class);
 
     Route::middleware(['auth', 'admin'])
     ->prefix('admin')

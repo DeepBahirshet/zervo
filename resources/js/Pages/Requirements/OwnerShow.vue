@@ -4,10 +4,49 @@ import ApplicationService from "@/Services/ApplicationService";
 import RequirementService from "@/Services/RequirementService";
 import { toast } from "vue-sonner";
 import ReviewModal from "@/Components/Review/ReviewModal.vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import axios from "axios";
+
+const aiLoading = ref(false);
+const aiAnalysis = ref(null);
+const aiError = ref("");
+
 
 const props = defineProps({
     requirement: Object,
+});
+
+const analyzeApplications = async () => {
+    aiLoading.value = true;
+    aiError.value = "";
+
+    try {
+        const { data } = await axios.post(
+            `/api/requirements/${props.requirement.id}/ai-analysis`,
+        );
+
+        aiAnalysis.value = data.data;
+    } catch (error) {
+        console.error(error);
+
+        aiError.value =
+            error.response?.data?.message || "Unable to analyze applications.";
+    } finally {
+        aiLoading.value = false;
+    }
+};
+
+const rankedCandidates = computed(() => {
+    if (!aiAnalysis.value?.candidates) {
+        return [];
+    }
+
+    return [...aiAnalysis.value.candidates]
+        .sort(
+            (a, b) =>
+                b.scores.overall -
+                a.scores.overall,
+        );
 });
 
 const showReviewModal = ref(false);
@@ -136,6 +175,167 @@ const reviewSubmitted = () => {
                     </p>
                 </div>
             </div>
+
+            <div class="mt-8 border-t pt-6">
+                <button
+                    @click="analyzeApplications"
+                    :disabled="aiLoading"
+                    class="rounded-md bg-purple-600 px-6 py-3 text-white hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                    <span v-if="aiLoading"> Analyzing Applications... </span>
+
+                    <span v-else> ✨ Analyze Applications with AI </span>
+                </button>
+
+                <p v-if="aiError" class="mt-3 text-sm text-red-600">
+                    {{ aiError }}
+                </p>
+            </div>
+
+            <div
+    v-if="aiAnalysis"
+    class="mt-6 rounded-lg border bg-gray-50 p-6"
+>
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold">
+            ✨ AI Application Analysis
+        </h2>
+
+        <p class="mt-3 text-gray-600">
+            {{ aiAnalysis.summary }}
+        </p>
+    </div>
+
+    <!-- Candidate Table -->
+
+    <div class="overflow-x-auto rounded-lg border bg-white">
+        <table class="w-full min-w-[1000px] text-sm">
+            <thead class="bg-gray-50">
+                <tr class="border-b text-left">
+                    <th class="px-4 py-3">
+                        Rank
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Candidate
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Overall
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Success
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Skills
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Experience
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Affordability
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Communication
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Availability
+                    </th>
+
+                    <th class="px-4 py-3">
+                        Recommendation
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr
+                    v-for="(candidate, index) in rankedCandidates"
+                    :key="candidate.id"
+                    class="border-b last:border-0"
+                >
+                    <!-- Rank -->
+
+                    <td class="px-4 py-4">
+                        <span
+                            class="font-bold"
+                        >
+                            #{{ index + 1 }}
+                        </span>
+                    </td>
+
+                    <!-- Candidate -->
+
+                    <td class="px-4 py-4">
+                        <div class="font-semibold">
+                            Candidate #{{ candidate.id }}
+                        </div>
+                    </td>
+
+                    <!-- Overall -->
+
+                    <td class="px-4 py-4">
+                        <span class="font-bold">
+    {{ candidate.scores.overall }}%
+</span>
+                    </td>
+
+                    <!-- Success -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.success_rate }}%
+                    </td>
+
+                    <!-- Skills -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.skill_match }}%
+                    </td>
+
+                    <!-- Experience -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.experience }}%
+                    </td>
+
+                    <!-- Affordability -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.affordability }}%
+                    </td>
+
+                    <!-- Communication -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.communication }}%
+                    </td>
+
+                    <!-- Availability -->
+
+                    <td class="px-4 py-4">
+                        {{ candidate.scores.availability }}%
+                    </td>
+
+                    <!-- Recommendation -->
+
+                    <td class="px-4 py-4">
+                        <span
+                            class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium"
+                        >
+                            {{ candidate.recommendation }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
             <!-- Applications -->
 
