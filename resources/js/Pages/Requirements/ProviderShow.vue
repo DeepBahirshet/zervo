@@ -69,10 +69,6 @@ const requirementStatus = (status) => {
             <div class="mt-6 space-y-2">
                 <p><strong>Budget:</strong> ₹{{ requirement.budget }}</p>
                 <p><strong>Location:</strong> {{ requirement.location }}</p>
-                <p>
-                    <strong>Status:</strong>
-                    {{ requirementStatus(requirement.status) }}
-                </p>
             </div>
 
             <div v-if="application" class="mt-8 rounded-lg border p-5">
