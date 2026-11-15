@@ -1,3 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+@import "tailwindcss";
+
+@theme {
+    --color-zervo-green: #123C2B;
+    --color-zervo-orange: #F97316;
+    --color-zervo-cream: #FFF9F0;
+
+    --font-sans: "Inter", sans-serif;
+}

@@ -7,11 +7,13 @@ use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+})->name('home');
+
 Route::middleware('guest')->group(function() {
 
-    Route::get('/', function() {
-        return Inertia::render('Auth/Login');
-    });
 
     // use web routes for session based auth
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
