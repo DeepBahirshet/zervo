@@ -13,6 +13,7 @@ class Requirement extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'category',
         'description',
         'budget',
         'location',

@@ -1,10 +1,25 @@
 
 @import "tailwindcss";
 
-@theme {
-    --color-zervo-green: #123C2B;
-    --color-zervo-orange: #F97316;
-    --color-zervo-cream: #FFF9F0;
+@plugin "@tailwindcss/forms";
 
-    --font-sans: "Inter", sans-serif;
+@theme {
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    --color-primary-50: #e6f4f2;
+    --color-primary-100: #cce9e5;
+    --color-primary-200: #99d3cb;
+    --color-primary-300: #66bdb1;
+    --color-primary-400: #33a797;
+    --color-primary-500: #087e78;
+    --color-primary-600: #076b66;
+    --color-primary-700: #075854;
+    --color-primary-800: #064542;
+    --color-primary-900: #073b3a;
+
+    --color-zervo-teal: #073b3a;
+    --color-zervo-green: #087e78;
+    --color-zervo-amber: #f59e0b;
+    --color-zervo-cream: #fff8ed;
+    --color-zervo-ink: #172b36;
 }

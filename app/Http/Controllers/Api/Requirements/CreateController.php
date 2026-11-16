@@ -17,6 +17,7 @@ class CreateController extends Controller
         $requirement = Requirement::create([
             'user_id' => $request->user()->id,
             'title' => $request->title,
+            'category' => $request->category,
             'description' => $request->description,
             'budget' => $request->budget,
             'location' => $request->location,

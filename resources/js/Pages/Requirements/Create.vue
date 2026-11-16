@@ -9,6 +9,7 @@ import { toast } from "vue-sonner";
 import { ref } from "vue";
 
 const form = useForm({
+    category: "",
     title: "",
     description: "",
     budget: "",
@@ -20,6 +21,7 @@ const submit = () => {
     form.clearErrors();
 
     const result = RequirementSchema.safeParse({
+        category: form.category,
         title: form.title,
         description: form.description,
         budget: form.budget,
@@ -67,6 +69,19 @@ const handleImages = (event) => {
     }));
 }
 
+const categories = [
+    "Plumbing",
+    "Electrical",
+    "Carpentry",
+    "Painting",
+    "AC & Appliances",
+    "Home Cleaning",
+    "Pest Control",
+    "Home Renovation",
+    "Gardening",
+    "Moving Services",
+];
+
 </script>
 
 <template>
@@ -84,6 +99,31 @@ const handleImages = (event) => {
                         class="w-full rounded-md border px-3 py-2"
                     />
                     <InputError :message="form.errors.title" />
+                </div>
+
+                <div>
+                    <label class="mb-1 block font-medium">
+                        Service Category
+                    </label>
+
+                    <select
+                        v-model="form.category"
+                        class="w-full rounded-md border px-3 py-2"
+                    >
+                        <option value="" disabled>
+                            Select a service category
+                        </option>
+
+                        <option
+                            v-for="category in categories"
+                            :key="category"
+                            :value="category"
+                        >
+                            {{ category }}
+                        </option>
+                    </select>
+
+                    <InputError :message="form.errors.category" />
                 </div>
 
                 <div>
