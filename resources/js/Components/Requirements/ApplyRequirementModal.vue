@@ -14,15 +14,10 @@ const props = defineProps({
     },
     requirementId: {
         type: Number,
-        required: true
+        required: true,
     },
-    isApplied: {
-        type: Boolean,
-        required: false
-    }
-})
+});
 
-const isApplied = ref(props.isApplied);
 
 const emit = defineEmits(['close', 'isApplied'])
 
@@ -59,11 +54,18 @@ const submit = async() => {
         await ApplicationService.apply(
             props.requirementId,
             form.data()
-        )
+        );
 
-        toast.success('Application submitted successfully.')
-        emit('isApplied');
-        closeModal()
+        const newApplication = {
+            message: form.message,
+            quoted_price: form.quoted_price,
+            estimated_days: form.estimated_days,
+            status: 'pending',
+        };
+
+        toast.success('Application submitted successfully.');
+        emit('isApplied', newApplication);
+        closeModal();
 
     } catch (error) {
         if (error.response?.status === 422) {

@@ -41,7 +41,7 @@ const navLinks = [
                 <a href="/login" class="rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold transition hover:bg-white/10">
                     Sign In
                 </a>
-                <a href="/register" class="rounded-xl bg-[#FF7900] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#F36B00]">
+                <a href="/requirements/create" class="rounded-xl bg-[#FF7900] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#F36B00]">
                     + Post a Requirement
                 </a>
             </div>
@@ -77,7 +77,7 @@ const navLinks = [
                     Sign In
                 </a>
 
-                <a href="/register" class="rounded-xl bg-[#FF7900] px-5 py-3 text-center font-bold">
+                <a href="/requirements/create" class="rounded-xl bg-[#FF7900] px-5 py-3 text-center font-bold">
                     Post a Requirement
                 </a>
             </nav>

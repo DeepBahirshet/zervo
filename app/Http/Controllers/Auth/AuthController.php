@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('requirements.index');
+        return redirect()->intended(route('requirements.index'));
     }
 
     public function showRegister(): Response {
@@ -49,7 +49,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('requirements.index');
+        return redirect()->intended(route('requirements.index'));
     }
 
     public function logout(Request $request) {
