@@ -4,7 +4,7 @@
     import Checkbox from '@/Components/Checkbox.vue';
     import GuestLayout from '@/Layouts/GuestLayout.vue';
     import InputError from '@/Components/InputError.vue';
-    import InputLabel from '@/Components/InputLabel.vue';
+    import InputLabel from '@/Components/InputLabel.vue';   
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import TextInput from '@/Components/TextInput.vue';
     import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -44,8 +44,12 @@
             <div class="w-full">
                 <!-- Brand -->
                 <div class="mb-8 text-center">
-                    <Link href="/" class="inline-flex items-center text-3xl font-extrabold tracking-tight text-[#123E2E]">
-                        <span class="text-[#FF7900]">Z</span>ervo<span class="text-[#FF7900]">.</span>
+                    <Link href="/" class="inline-flex items-center">
+                        <img
+                            src="/images/zervo-logo-dark.png"
+                            alt="Zervo"
+                            class="h-15 w-auto object-contain"
+                        />
                     </Link>
 
                     <h1 class="mt-5 text-3xl font-extrabold tracking-tight text-[#123E2E]">
@@ -125,13 +129,17 @@
                     <!-- Remember Me -->
                     <div class="flex items-center">
                         <Checkbox
+                            id="remember"
                             name="remember"
                             v-model:checked="form.remember"
                             class="rounded border-gray-300 text-[#08744D] focus:ring-[#08744D]"
                         />
-                        <span class="ms-2 text-sm text-gray-500">
-                            Keep me logged in
-                        </span>
+
+                        <InputLabel
+                            for="remember"
+                            value="Keep me logged in"
+                            class="ms-2 cursor-pointer text-sm text-gray-500"
+                        />
                     </div>
 
                     <!-- Submit -->

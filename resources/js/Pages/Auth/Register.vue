@@ -64,7 +64,11 @@ const inputClass = 'mt-2 block w-full !rounded-xl !border-[#E5EDE7] !bg-[#FAFCFA
         <!-- Header -->
         <div class="mb-7 text-center">
             <Link href="/" class="inline-flex items-center text-3xl font-extrabold tracking-tight text-[#123E2E]">
-                <span class="text-[#FF7900]">Z</span>ervo<span class="text-[#FF7900]">.</span>
+                <img
+                    src="/images/zervo-logo-dark.png"
+                    alt="Zervo"
+                    class="h-15 w-auto object-contain"
+                />
             </Link>
 
             <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-[#123E2E]">

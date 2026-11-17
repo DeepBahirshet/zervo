@@ -21,11 +21,13 @@ const navLinks = [
     <header class="relative z-50 border-b border-white/10 bg-[#003528] text-white">
         <div class="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 lg:px-12">
 
-            <a href="/" class="flex items-center gap-3">
-                <span class="text-4xl font-black text-[#FF7900]">Z</span>
-                <span class="text-2xl font-extrabold tracking-tight">
-                    Zervo<span class="text-[#FF7900]">.</span>
-                </span>
+            <!-- Logo -->
+            <a href="/" class="flex items-center">
+                <img
+                    src="/images/zervo-logo-white.png"
+                    alt="Zervo"
+                    class="h-15 w-auto object-contain"
+                />
             </a>
 
             <nav class="hidden items-center gap-8 lg:flex">
