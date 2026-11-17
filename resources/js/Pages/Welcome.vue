@@ -1,7 +1,7 @@
 
     <script setup>
     import { Head } from '@inertiajs/vue3';
-    import PublicHeader from '@/Components/Layouts/PublicHeader.vue';
+    import Header from '@/Components/Layouts/Header.vue';
     import { ref } from 'vue';
     import ZervoChat from '@/Components/AI/ZervoChat.vue';
 
@@ -130,7 +130,7 @@
         <Head title="Zervo | Home Services Made Simple" />
 
         <div class="min-h-screen overflow-hidden bg-[#FFF9F0] text-[#172B25]">
-            <PublicHeader />
+            <Header />
 
             <!-- HERO -->
             <section class="hero-section relative isolate overflow-hidden">
@@ -203,7 +203,6 @@
                                 class="inline-flex items-center gap-3 rounded-xl bg-[#FF7900] px-7 py-4 font-bold text-white shadow-lg shadow-orange-950/25 transition duration-300 hover:-translate-y-1 hover:bg-[#F36B00] hover:shadow-xl"
                             >
                                 Post a Requirement
-                                <ArrowRight :size="19" />
                             </a>
 
                             <a
@@ -312,7 +311,7 @@
             </section>
 
             <!-- HOW IT WORKS -->
-            <section id="how-it-works" class="px-6 pb-20 lg:px-12">
+            <section id="how-it-works" class="px-6 pb-20 lg:px-12"> 
                 <div class="relative mx-auto max-w-[1400px] overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#003D2D] via-[#064B35] to-[#003528] px-7 py-14 text-white shadow-xl sm:px-12">
 
                     <div class="pointer-events-none absolute -right-20 -top-32 h-80 w-80 rounded-full bg-[#FF7900]/20 blur-[100px]"></div>

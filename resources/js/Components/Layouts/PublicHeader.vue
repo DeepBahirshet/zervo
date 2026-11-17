@@ -1,8 +1,13 @@
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
 
 const mobileMenuOpen = ref(false);
+const page = usePage();
+
+const user = computed(() => page.props.auth?.user ?? null);
+const isLoggedIn = computed(() => !!user.value);
 
 const navLinks = [
     { label: 'Explore Services', href: '/#services' },
@@ -37,13 +42,45 @@ const navLinks = [
                 </a>
             </nav>
 
+            <!-- Desktop actions -->
             <div class="hidden items-center gap-3 lg:flex">
-                <a href="/login" class="rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold transition hover:bg-white/10">
-                    Sign In
-                </a>
-                <a href="/requirements/create" class="rounded-xl bg-[#FF7900] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#F36B00]">
-                    + Post a Requirement
-                </a>
+                <template v-if="isLoggedIn">
+                    <span class="text-sm font-medium text-white/70">
+                        Hi, {{ user.name }}
+                    </span>
+
+                    <Link
+                        :href="route('requirements.create')"
+                        class="rounded-xl bg-[#FF7900] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#F36B00]"
+                    >
+                        + Post a Requirement
+                    </Link>
+
+                    <Link
+                        :href="route('logout')"
+                        method="get"
+                        as="button"
+                        class="rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 cursor-pointer"
+                    >
+                        Logout
+                    </Link>
+                </template>
+
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="rounded-xl border border-white/30 px-6 py-3 text-sm font-semibold transition hover:bg-white/10"
+                    >
+                        Sign In
+                    </Link>
+
+                    <Link
+                        :href="route('requirements.create')"
+                        class="rounded-xl bg-[#FF7900] px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#F36B00]"
+                    >
+                        + Post a Requirement
+                    </Link>
+                </template>
             </div>
 
             <button
@@ -57,7 +94,10 @@ const navLinks = [
             </button>
         </div>
 
-        <div v-if="mobileMenuOpen" class="border-t border-white/10 bg-[#003528] px-6 py-5 lg:hidden">
+        <div
+            v-if="mobileMenuOpen"
+            class="border-t border-white/10 bg-[#003528] px-6 py-5 lg:hidden"
+        >
             <nav class="flex flex-col gap-5">
                 <a
                     v-for="link in navLinks"
@@ -69,17 +109,55 @@ const navLinks = [
                     {{ link.label }}
                 </a>
 
-                <a href="/register" class="text-sm font-semibold text-white/80">
+                <a
+                    href="/register"
+                    class="text-sm font-semibold text-white/80"
+                    @click="mobileMenuOpen = false"
+                >
                     For Providers
                 </a>
 
-                <a href="/login" class="text-sm font-semibold text-white/80">
-                    Sign In
-                </a>
+                <template v-if="isLoggedIn">
+                    <span class="text-sm font-medium text-white/70">
+                        Hi, {{ user.name }}
+                    </span>
 
-                <a href="/requirements/create" class="rounded-xl bg-[#FF7900] px-5 py-3 text-center font-bold">
-                    Post a Requirement
-                </a>
+                    <Link
+                        :href="route('requirements.create')"
+                        class="rounded-xl bg-[#FF7900] px-5 py-3 text-center font-bold"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Post a Requirement
+                    </Link>
+
+                    <Link
+                        :href="route('logout')"
+                        method="post"
+                        as="button"
+                        class="rounded-xl border border-white/30 px-5 py-3 text-center font-semibold cursor-pointer"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Logout
+                    </Link>
+                </template>
+
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="text-sm font-semibold text-white/80"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Sign In
+                    </Link>
+
+                    <Link
+                        :href="route('requirements.create')"
+                        class="rounded-xl bg-[#FF7900] px-5 py-3 text-center font-bold"
+                        @click="mobileMenuOpen = false"
+                    >
+                        Post a Requirement
+                    </Link>
+                </template>
             </nav>
         </div>
     </header>
