@@ -5,12 +5,9 @@ use App\Http\Controllers\Admin\Requirements\IndexController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\HomeController;
 
-
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('guest')->group(function() {
 

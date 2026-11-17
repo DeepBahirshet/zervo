@@ -4,6 +4,7 @@
     import Header from '@/Components/Layouts/Header.vue';
     import { ref } from 'vue';
     import ZervoChat from '@/Components/AI/ZervoChat.vue';
+    import FeaturedRequirements from '@/Components/Requirements/FeaturedRequirements.vue';
 
     import {
         Droplets,
@@ -236,6 +237,9 @@
                     </div>
                 </div>
             </section>
+
+            <!-- FEATURED LOCAL REQUIREMENTS -->
+            <FeaturedRequirements :requirements="featuredRequirements" />
 
             <!-- SERVICES -->
             <section id="services" class="relative py-24">

@@ -11,8 +11,7 @@ const isLoggedIn = computed(() => !!user.value);
 
 const navLinks = [
     { label: 'Explore Services', href: '/#services' },
-    { label: 'Find Professionals', href: '/#services' },
-    { label: 'Requirements', href: '/login' },
+    { label: 'Find Services', href: '/requirements' },
     { label: 'How It Works', href: '/#how-it-works' },
 ];
 </script>
@@ -22,29 +21,34 @@ const navLinks = [
         <div class="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 lg:px-12">
 
             <!-- Logo -->
-            <a href="/" class="flex items-center">
+            <Link href="/" class="flex items-center">
                 <img
                     src="/images/zervo-logo-white.png"
                     alt="Zervo"
-                    class="h-15 w-auto object-contain"
+                    class="h-12 w-auto object-contain"
                 />
-            </a>
+            </Link>
 
+            <!-- Desktop Navigation -->
             <nav class="hidden items-center gap-8 lg:flex">
-                <a
+                <Link
                     v-for="link in navLinks"
                     :key="link.label"
                     :href="link.href"
                     class="text-sm font-semibold text-white/80 transition hover:text-[#FF9B38]"
                 >
                     {{ link.label }}
-                </a>
-                <a href="/register" class="text-sm font-semibold text-white/80 hover:text-[#FF9B38]">
+                </Link>
+
+                <Link
+                    href="/register"
+                    class="text-sm font-semibold text-white/80 transition hover:text-[#FF9B38]"
+                >
                     For Providers
-                </a>
+                </Link>
             </nav>
 
-            <!-- Desktop actions -->
+            <!-- Desktop Actions -->
             <div class="hidden items-center gap-3 lg:flex">
                 <template v-if="isLoggedIn">
                     <span class="text-sm font-medium text-white/70">
@@ -60,9 +64,9 @@ const navLinks = [
 
                     <Link
                         :href="route('logout')"
-                        method="get"
+                        method="post"
                         as="button"
-                        class="rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 cursor-pointer"
+                        class="cursor-pointer rounded-xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
                     >
                         Logout
                     </Link>
@@ -85,6 +89,7 @@ const navLinks = [
                 </template>
             </div>
 
+            <!-- Mobile Toggle -->
             <button
                 type="button"
                 class="rounded-lg border border-white/20 px-4 py-2 lg:hidden"
@@ -96,12 +101,13 @@ const navLinks = [
             </button>
         </div>
 
+        <!-- Mobile Navigation -->
         <div
             v-if="mobileMenuOpen"
             class="border-t border-white/10 bg-[#003528] px-6 py-5 lg:hidden"
         >
             <nav class="flex flex-col gap-5">
-                <a
+                <Link
                     v-for="link in navLinks"
                     :key="link.label"
                     :href="link.href"
@@ -109,15 +115,15 @@ const navLinks = [
                     @click="mobileMenuOpen = false"
                 >
                     {{ link.label }}
-                </a>
+                </Link>
 
-                <a
+                <Link
                     href="/register"
                     class="text-sm font-semibold text-white/80"
                     @click="mobileMenuOpen = false"
                 >
                     For Providers
-                </a>
+                </Link>
 
                 <template v-if="isLoggedIn">
                     <span class="text-sm font-medium text-white/70">
@@ -136,7 +142,7 @@ const navLinks = [
                         :href="route('logout')"
                         method="post"
                         as="button"
-                        class="rounded-xl border border-white/30 px-5 py-3 text-center font-semibold cursor-pointer"
+                        class="cursor-pointer rounded-xl border border-white/30 px-5 py-3 text-center font-semibold"
                         @click="mobileMenuOpen = false"
                     >
                         Logout
