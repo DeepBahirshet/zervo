@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
-import { MapPin } from "lucide-vue-next";
+import { MapPin, UserRound, SearchX } from "lucide-vue-next";
 
 const loading = ref(false);
 const requirements = ref([]);
@@ -16,19 +16,8 @@ const selectedCategory = ref("All");
 const page = usePage();
 const user = page.props.auth.user;
 
-const categories = [
-    "All",
-    "Plumbing",
-    "Electrical",
-    "Carpentry",
-    "Painting",
-    "AC & Appliances",
-    "Home Cleaning",
-    "Pest Control",
-    "Home Renovation",
-    "Gardening",
-    "Moving Services",
-];
+const categories = ref([]);
+const selectedCategory = ref(null);
 
 const filteredRequirements = computed(() => {
     let result = requirements.value;
@@ -39,10 +28,10 @@ const filteredRequirements = computed(() => {
         );
     }
 
-    if (selectedCategory.value !== "All") {
-        result = result.filter(
-            (requirement) =>
-                requirement.category === selectedCategory.value
+    if (selectedCategory.value !== null) {
+    result = result.filter(
+        (requirement) =>
+            requirement.category_id === selectedCategory.value
         );
     }
 
@@ -54,7 +43,7 @@ const filteredRequirements = computed(() => {
                 requirement.title,
                 requirement.description,
                 requirement.location,
-                requirement.category,
+                requirement.service_category?.name,
             ].some((value) => value?.toLowerCase().includes(query))
         );
     }
@@ -68,7 +57,9 @@ const fetchRequirements = async () => {
 
     try {
         const { data } = await axios.get("/api/requirements");
+
         requirements.value = data.data;
+        categories.value = data.categories ?? [];
     } catch (err) {
         error.value = "Could not load requirements. Please try again.";
     } finally {
@@ -138,32 +129,38 @@ onMounted(fetchRequirements);
                         </div>
 
                         <!-- Ownership filter -->
-                        <div>
+                        <div class="w-full sm:w-auto">
                             <label class="mb-2 block text-sm font-semibold text-[#24483B]">
                                 Show requirements
                             </label>
 
-                            <div class="flex rounded-xl bg-[#F3F5F0] p-1">
+                            <div class="relative flex w-full rounded-2xl border border-[#E5E9E3] bg-[#F3F5F0] p-1 sm:w-auto">
+                                <!-- Sliding active background -->
+                                <div
+                                    class="absolute bottom-1 top-1 w-[calc(50%-4px)] rounded-2xl bg-[#003D2D] shadow-md transition-transform duration-300 ease-in-out"
+                                    :class="filter === 'mine' ? 'translate-x-full' : 'translate-x-0'"
+                                ></div>
+
                                 <button
                                     type="button"
                                     @click="filter = 'all'"
                                     :class="[
-                                        'cursor-pointer rounded-lg px-4 py-2.5 text-sm font-semibold transition',
+                                        'relative z-10 flex-1 rounded-2xl px-5 py-2.5 text-sm font-semibold transition-colors duration-300 sm:flex-none',
                                         filter === 'all'
-                                            ? 'bg-[#003D2D] text-white shadow-sm'
+                                            ? 'text-white'
                                             : 'text-[#64766E] hover:text-[#003D2D]',
                                     ]"
                                 >
-                                    All
+                                    All Requirements
                                 </button>
 
                                 <button
                                     type="button"
                                     @click="filter = 'mine'"
                                     :class="[
-                                        'cursor-pointer rounded-lg px-4 py-2.5 text-sm font-semibold transition',
+                                        'relative z-10 flex-1 rounded-2xl px-5 py-2.5 text-sm font-semibold transition-colors duration-300 sm:flex-none',
                                         filter === 'mine'
-                                            ? 'bg-[#003D2D] text-white shadow-sm'
+                                            ? 'text-white'
                                             : 'text-[#64766E] hover:text-[#003D2D]',
                                     ]"
                                 >
@@ -181,18 +178,31 @@ onMounted(fetchRequirements);
 
                         <div class="flex flex-wrap gap-2">
                             <button
-                                v-for="category in categories"
-                                :key="category"
                                 type="button"
-                                @click="selectedCategory = category"
+                                @click="selectedCategory = null"
                                 :class="[
                                     'cursor-pointer rounded-full border px-4 py-2 text-xs font-semibold transition',
-                                    selectedCategory === category
+                                    selectedCategory === null
                                         ? 'border-[#003D2D] bg-[#003D2D] text-white'
                                         : 'border-[#E5E9E3] bg-white text-[#64766E] hover:border-[#003D2D] hover:text-[#003D2D]',
                                 ]"
                             >
-                                {{ category }}
+                                All
+                            </button>
+
+                            <button
+                                v-for="category in categories"
+                                :key="category.id"
+                                type="button"
+                                @click="selectedCategory = category.id"
+                                :class="[
+                                    'cursor-pointer rounded-full border px-4 py-2 text-xs font-semibold transition',
+                                    selectedCategory === category.id
+                                        ? 'border-[#003D2D] bg-[#003D2D] text-white'
+                                        : 'border-[#E5E9E3] bg-white text-[#64766E] hover:border-[#003D2D] hover:text-[#003D2D]',
+                                ]"
+                            >
+                                {{ category.name }}
                             </button>
                         </div>
                     </div>
@@ -214,7 +224,7 @@ onMounted(fetchRequirements);
                     <button
                         v-if="search || selectedCategory !== 'All' || filter !== 'all'"
                         type="button"
-                        @click="search = ''; selectedCategory = 'All'; filter = 'all'"
+                        @click="search = ''; selectedCategory = null; filter = 'all'"
                         class="cursor-pointer text-sm font-semibold text-[#D96B00] hover:text-[#003D2D]"
                     >
                         Clear filters
@@ -262,8 +272,8 @@ onMounted(fetchRequirements);
                     v-else-if="filteredRequirements.length === 0"
                     class="rounded-3xl border border-[#E9E5DC] bg-white px-6 py-16 text-center"
                 >
-                    <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E7F0E8] text-3xl">
-                        🏠
+                    <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E7F0E8]">
+                        <SearchX class="h-8 w-8 text-[#003D2D]" :stroke-width="1.8" />
                     </div>
 
                     <h3 class="text-xl font-bold text-[#003D2D]">
@@ -308,13 +318,17 @@ onMounted(fetchRequirements);
 
                             <div class="absolute left-4 top-4">
                                 <span class="rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#003D2D] shadow-sm">
-                                    {{ requirement.category || 'Service' }}
+                                    {{ requirement.service_category?.name || 'Service' }}
                                 </span>
                             </div>
 
-                            <div v-if="requirement.user_id === user.id" class="absolute right-4 top-4">
-                                <span class="rounded-full bg-[#E4EEE7] px-3 py-1.5 text-xs font-bold text-[#003D2D] shadow-sm">
-                                    Posted by You
+                            <div
+                                v-if="requirement.user_id === user.id"
+                                class="absolute right-4 top-4"
+                            >
+                                <span class="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-[#FF7900] px-3.5 py-2 text-xs font-bold text-white shadow-lg shadow-black/15 backdrop-blur-sm">
+                                    <UserRound class="h-3.5 w-3.5" />
+                                    Your Requirement
                                 </span>
                             </div>
                         </div>

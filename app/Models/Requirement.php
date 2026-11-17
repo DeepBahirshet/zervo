@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Models;
@@ -7,18 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Requirement extends Model
 {
-    /** @use HasFactory<\Database\Factories\RequirementFactory> */
     use HasFactory;
 
     protected $fillable = [
         'user_id',
         'title',
+        'category_id',
         'category',
         'description',
         'budget',
         'location',
         'status',
-        'work_status'
+        'work_status',
     ];
 
     public function user()
@@ -39,5 +40,10 @@ class Requirement extends Model
     public function images()
     {
         return $this->hasMany(RequirementImage::class);
+    }
+
+    public function serviceCategory()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }

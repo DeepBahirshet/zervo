@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\Requirements;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequirementRequest;
 use App\Models\Requirement;
-use Illuminate\Http\Request;
 
 class CreateController extends Controller
 {
@@ -14,13 +13,15 @@ class CreateController extends Controller
      */
     public function __invoke(RequirementRequest $request)
     {
+        $validated = $request->validated();
+
         $requirement = Requirement::create([
             'user_id' => $request->user()->id,
-            'title' => $request->title,
-            'category' => $request->category,
-            'description' => $request->description,
-            'budget' => $request->budget,
-            'location' => $request->location,
+            'title' => $validated['title'],
+            'category_id' => $validated['category_id'],
+            'description' => $validated['description'],
+            'budget' => $validated['budget'],
+            'location' => $validated['location'],
             'status' => 'pending',
             'work_status' => 'open',
         ]);
@@ -32,7 +33,6 @@ class CreateController extends Controller
 
             foreach ($request->file('images') as $image) {
                 $imageData[] = [
-                    
                     'image' => $image->store($folderPath, 'public'),
                 ];
             }
@@ -40,6 +40,8 @@ class CreateController extends Controller
             $requirement->images()->createMany($imageData);
         }
 
-        return redirect()->route('requirements.index')->with('success', 'Requirement posted successfully.');
+        return redirect()
+            ->route('requirements.index')
+            ->with('success', 'Requirement posted successfully.');
     }
 }

@@ -9,21 +9,15 @@ import { getFormErrors } from "@/Utils/validation";
 import { toast } from "vue-sonner";
 import { ArrowLeft } from "lucide-vue-next";    
 
-const categories = [
-    "Plumbing",
-    "Electrical",
-    "Carpentry",
-    "Painting",
-    "AC & Appliances",
-    "Home Cleaning",
-    "Pest Control",
-    "Home Renovation",
-    "Gardening",
-    "Moving Services",
-];
+const props = defineProps({
+    categories: {
+        type: Array,
+        default: () => [],
+    },
+});
 
 const form = useForm({
-    category: "",
+    category_id: "",
     title: "",
     description: "",
     budget: "",
@@ -80,7 +74,7 @@ const submit = () => {
     form.clearErrors();
 
     const result = RequirementSchema.safeParse({
-        category: form.category,
+        category_id: form.category_id,
         title: form.title,
         description: form.description,
         budget: form.budget,
@@ -170,7 +164,7 @@ onBeforeUnmount(() => {
                                 </label>
 
                                 <select
-                                    v-model="form.category"
+                                    v-model="form.category_id"
                                     class="w-full rounded-xl border border-[#E5E9E3] bg-[#FCFDFB] px-4 py-3 text-sm text-[#24483B] outline-none transition focus:border-[#FF7900] focus:ring-4 focus:ring-[#FF7900]/10"
                                 >
                                     <option value="" disabled>
@@ -178,15 +172,16 @@ onBeforeUnmount(() => {
                                     </option>
 
                                     <option
-                                        v-for="category in categories"
-                                        :key="category"
-                                        :value="category"
+                                        v-for="category in props.categories"
+                                        :key="category.id"
+                                        :value="category.id"
                                     >
-                                        {{ category }}
+                                        {{ category.name }}
                                     </option>
                                 </select>
 
-                                <InputError :message="form.errors.category" />
+                                <InputError :message="form.errors.category_id" />
+
                             </div>
 
                             <!-- Title -->

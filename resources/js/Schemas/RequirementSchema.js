@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 export const RequirementSchema = z.object({
@@ -7,11 +8,10 @@ export const RequirementSchema = z.object({
         .min(1, 'Title is required.')
         .max(255, 'Title cannot exceed 255 characters.'),
 
-    category: z
-        .string()
-        .trim()
-        .min(1, 'Please select a service category.')
-        .max(100, 'Category cannot exceed 100 characters.'),
+    category_id: z.coerce
+        .number()
+        .int('Please select a valid service category.')
+        .positive('Please select a service category.'),
 
     description: z
         .string()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Requirement;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,15 +16,18 @@ class RequirementController extends Controller
 
     public function create()
     {
-        return Inertia::render('Requirements/Create');
+        return Inertia::render('Requirements/Create', [
+            'categories' => Category::where('is_active', true)
+                ->orderBy('name')
+                ->get(['id', 'name']),
+        ]);
     }
-    
+
     public function show(Requirement $requirement)
     {
         $requirement->load(['images']);
-        if($requirement->user_id === auth()->id())
-        {
 
+        if ($requirement->user_id === auth()->id()) {
             $requirement->load(['applications.user']);
 
             return Inertia::render('Requirements/OwnerShow', [
@@ -32,11 +36,12 @@ class RequirementController extends Controller
         }
 
         $requirement = $requirement->load('user');
-        
-        $application = $requirement->applications()->where('user_id', auth()->id())->first();
+
+        $application = $requirement->applications()
+            ->where('user_id', auth()->id())
+            ->first();
 
         $hasApplied = !empty($application);
-
 
         return Inertia::render('Requirements/ProviderShow', [
             'requirement' => $requirement,

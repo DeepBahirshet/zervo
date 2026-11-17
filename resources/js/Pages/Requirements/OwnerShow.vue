@@ -130,12 +130,22 @@ const reviewSubmitted = () => {
                     v-if="requirement.images && requirement.images.length"
                     class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3"
                 >
+                    <!-- Uploaded images -->
                     <img
+                        v-if="requirement.images?.length"
                         v-for="image in requirement.images"
                         :key="image.id"
                         :src="`/storage/${image.image}`"
                         :alt="requirement.title"
                         class="h-48 w-full rounded-lg border object-cover transition hover:scale-105"
+                    />
+
+                    <!-- Placeholder image -->
+                    <img
+                        v-else
+                        src="/images/zervo-placeholder.png"
+                        :alt="requirement.title"
+                        class="h-48 w-full rounded-lg border object-cover"
                     />
                 </div>
 
