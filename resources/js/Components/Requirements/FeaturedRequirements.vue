@@ -52,10 +52,6 @@ const formatDate = (date) => {
             <!-- Section heading -->
             <div class="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
                 <div>
-                    <div class="mb-4 inline-flex items-center gap-2 rounded-full bg-[#003D2D]/10 px-4 py-2 text-sm font-semibold text-[#003D2D]">
-                        <span class="h-2 w-2 rounded-full bg-[#FF7900]"></span>
-                        Local Opportunities
-                    </div>
 
                     <h2 class="text-3xl font-bold tracking-tight text-[#003528] sm:text-4xl">
                         Find Work Around
@@ -73,7 +69,7 @@ const formatDate = (date) => {
                     class="inline-flex shrink-0 items-center gap-2 font-semibold text-[#003D2D] transition hover:text-[#FF7900]"
                 >
                     Browse all requirements
-                    <ArrowRight class="h-5 w-5" />
+                    
                 </Link>
             </div>
 
@@ -138,7 +134,6 @@ const formatDate = (date) => {
                         class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#003D2D] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#FF7900]"
                     >
                         View Requirement
-                        <ArrowRight class="h-4 w-4" />
                     </Link>
                 </article>
             </div>

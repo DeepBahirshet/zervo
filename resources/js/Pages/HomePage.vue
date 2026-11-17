@@ -31,6 +31,14 @@
         CheckCircle2,
     } from 'lucide-vue-next';
 
+    const props = defineProps({
+    featuredRequirements: {
+        type: Array,
+            default: () => [],
+        },
+    });
+    
+
     const categories = [
         { icon: Droplets, name: 'Plumbing', description: 'Pipes, taps and water repairs', color: 'orange' },
         { icon: Zap, name: 'Electrical', description: 'Wiring, switches and lighting', color: 'green' },
@@ -134,7 +142,7 @@
             <Header />
 
             <!-- HERO -->
-            <section class="hero-section relative isolate overflow-hidden">
+            <section class="hero-section relative isolate overflow-hidden mb-12">
                 <div class="hero-glow hero-glow-one"></div>
                 <div class="hero-glow hero-glow-two"></div>
 
@@ -239,7 +247,7 @@
             </section>
 
             <!-- FEATURED LOCAL REQUIREMENTS -->
-            <FeaturedRequirements :requirements="featuredRequirements" />
+            <FeaturedRequirements :requirements="props.featuredRequirements" />
 
             <!-- SERVICES -->
             <section id="services" class="relative py-24">

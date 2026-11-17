@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('/');
+        return redirect()->route('home');
     }
 
     public function profile(Request $request)

@@ -4,6 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
+import { MapPin } from "lucide-vue-next";
 
 const loading = ref(false);
 const requirements = ref([]);
@@ -84,6 +85,7 @@ const formatBudget = (budget) => {
 };
 
 onMounted(fetchRequirements);
+
 </script>
 
 <template>
@@ -291,21 +293,18 @@ onMounted(fetchRequirements);
                         :key="requirement.id"
                         class="group flex flex-col overflow-hidden rounded-3xl border border-[#E9E5DC] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#D5DFD4] hover:shadow-xl"
                     >
-                        <!-- Image -->
+                        <!-- Requirement card image -->
                         <div class="relative h-52 overflow-hidden bg-[#F0F2EC]">
                             <img
-                                v-if="requirement.images?.length"
-                                :src="`/storage/${requirement.images[0].image}`"
+                                :src="
+                                    requirement.images?.length
+                                        ? `/storage/${requirement.images[0].image}`
+                                        : '/images/zervo-placeholder.png'
+                                "
                                 :alt="requirement.title"
                                 class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                                @error="$event.target.onerror = null; $event.target.src = '/images/zervo-placeholder.png'"
                             />
-
-                            <div
-                                v-else
-                                class="flex h-full items-center justify-center text-5xl text-[#B5C1B6]"
-                            >
-                                🏠
-                            </div>
 
                             <div class="absolute left-4 top-4">
                                 <span class="rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-[#003D2D] shadow-sm">
@@ -313,10 +312,7 @@ onMounted(fetchRequirements);
                                 </span>
                             </div>
 
-                            <div
-                                v-if="requirement.user_id === user.id"
-                                class="absolute right-4 top-4"
-                            >
+                            <div v-if="requirement.user_id === user.id" class="absolute right-4 top-4">
                                 <span class="rounded-full bg-[#E4EEE7] px-3 py-1.5 text-xs font-bold text-[#003D2D] shadow-sm">
                                     Posted by You
                                 </span>
@@ -338,7 +334,7 @@ onMounted(fetchRequirements);
                             <div class="mt-5 space-y-3 border-t border-[#F0EEE8] pt-4">
 
                                 <div class="flex items-center gap-2 text-sm text-[#64766E]">
-                                    <span>📍</span>
+                                    <MapPin class="h-4 w-4 shrink-0 text-[#FF7900]" />
                                     <span class="truncate">
                                         {{ requirement.location }}
                                     </span>

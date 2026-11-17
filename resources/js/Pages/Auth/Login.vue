@@ -144,7 +144,7 @@
 
                     <!-- Submit -->
                     <PrimaryButton
-                        class="!flex w-full !justify-center !rounded-xl !bg-[#07563A] !px-5 !py-3.5 !text-sm !font-bold !text-white shadow-lg shadow-emerald-950/10 transition hover:!bg-[#06452F] hover:shadow-xl"
+                        class="!flex w-full !justify-center !rounded-xl !bg-[#07563A] !px-5 !py-3.5 !text-sm !font-bold !text-white shadow-lg shadow-emerald-950/10 transition hover:!bg-[#06452F] hover:shadow-xl cursor-pointer"
                         :class="{ 'opacity-50': form.processing }"
                         :disabled="form.processing"
                     >

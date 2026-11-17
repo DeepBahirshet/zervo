@@ -39,7 +39,11 @@ const footerGroups = [
                 <!-- Brand -->
                 <div>
                     <a href="/" class="text-4xl font-extrabold tracking-tight">
-                        <span class="text-[#FF7900]">Z</span>ervo<span class="text-[#FF7900]">.</span>
+                        <img
+                            src="/images/zervo-logo-white.png"
+                            alt="Zervo"
+                            class="h-20 w-auto object-contain"
+                        />
                     </a>
 
                     <p class="mt-5 max-w-sm leading-7 text-white/60">
