@@ -287,7 +287,7 @@ const formatDate = (date) => {
                                 v-if="!isApplied"
                                 type="button"
                                 @click="showApplyModal = true"
-                                class="mt-7 w-full rounded-xl bg-[#F47700] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#DE6900]"
+                                class="mt-7 w-full rounded-xl cursor-pointer bg-[#F47700] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[#DE6900]"
                             >
                                 Apply for this work
                             </button>

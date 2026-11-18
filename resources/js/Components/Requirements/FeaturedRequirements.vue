@@ -86,7 +86,7 @@ const formatDate = (date) => {
                     <!-- Card top -->
                     <div class="mb-5 flex items-center justify-between gap-3">
                         <span class="rounded-full bg-[#003D2D]/10 px-3 py-1.5 text-xs font-semibold text-[#003D2D]">
-                            {{ requirement.category?.name ?? requirement.category ?? 'Local Service' }}
+                            {{ requirement.service_category?.name ?? 'Local Service' }}
                         </span>
 
                         <span class="flex items-center gap-1.5 text-xs font-medium text-emerald-700">

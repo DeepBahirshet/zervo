@@ -179,7 +179,7 @@ const navLinks = [
 
                     <Link
                         :href="route('logout')"
-                        method="post"
+                        method="get"
                         as="button"
                         class="cursor-pointer rounded-xl border border-white/30 px-5 py-3 text-center font-semibold"
                         @click="mobileMenuOpen = false"

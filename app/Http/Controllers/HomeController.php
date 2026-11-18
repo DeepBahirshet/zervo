@@ -10,6 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         $featuredRequirements = Requirement::query()
+            ->with('serviceCategory')
             ->latest()
             ->take(4)
             ->get();

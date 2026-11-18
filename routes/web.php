@@ -6,8 +6,22 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RequirementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/categories', [PageController::class, 'categories'])
+    ->name('categories.index');
+
+Route::get('/about', [PageController::class, 'about'])
+    ->name('about');
+
+Route::get('/insights', [PageController::class, 'insights'])
+    ->name('insights.index');
+
 
 Route::middleware('guest')->group(function() {
 

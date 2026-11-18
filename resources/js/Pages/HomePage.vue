@@ -219,7 +219,6 @@
                                 class="inline-flex items-center gap-3 rounded-xl border border-white/25 bg-white/[0.04] px-7 py-4 font-semibold text-white backdrop-blur transition duration-300 hover:border-white/50 hover:bg-white/10"
                             >
                                 Explore Services
-                                <ArrowRight :size="18" />
                             </a>
                         </div>
 
@@ -279,7 +278,6 @@
                             class="inline-flex items-center gap-2 font-bold text-[#0C6246] transition hover:text-[#F47700]"
                         >
                             View all services
-                            <ArrowRight :size="18" />
                         </a>
                     </div>
 
@@ -312,10 +310,6 @@
 
                             <div class="relative mt-5 flex items-center justify-between">
                                 <span class="text-xs font-bold text-[#0C6246]">Explore service</span>
-
-                                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-[#FFF1E1] text-[#F47700] transition duration-300 group-hover:bg-[#F47700] group-hover:text-white">
-                                    <ArrowRight :size="16" />
-                                </span>
                             </div>
                         </button>
                     </div>
@@ -389,7 +383,7 @@
                         </p>
                     </div>
 
-                    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 cursor-pointer">
                         <div
                             v-for="benefit in benefits"
                             :key="benefit.title"
@@ -441,7 +435,6 @@
                             class="inline-flex shrink-0 items-center gap-3 rounded-xl bg-[#FF7900] px-8 py-4 font-bold text-white shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:bg-[#F36B00] hover:shadow-xl"
                         >
                             Post a Requirement
-                            <ArrowRight :size="19" />
                         </a>
                     </div>
                 </div>

@@ -4,20 +4,39 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
-import { MapPin, UserRound, SearchX } from "lucide-vue-next";
+import { MapPin, UserRound, SearchX, RotateCcw } from "lucide-vue-next";
 
 const loading = ref(false);
 const requirements = ref([]);
 const error = ref("");
 const filter = ref("all");
 const search = ref("");
-const selectedCategory = ref("All");
 
 const page = usePage();
+
+const queryParams = new URLSearchParams(
+    page.url.split("?")[1] ?? ""
+);
+
+const initialCategoryId = Number(queryParams.get("category_id"));
+
+const selectedCategory = ref(
+    Number.isInteger(initialCategoryId) && initialCategoryId > 0
+        ? initialCategoryId
+        : null
+);
+
+const hasActiveFilters = computed(() => {
+    return (
+        search.value.trim() !== "" ||
+        selectedCategory.value !== null ||
+        filter.value !== "all"
+    );
+});
+
 const user = page.props.auth.user;
 
 const categories = ref([]);
-const selectedCategory = ref(null);
 
 const filteredRequirements = computed(() => {
     let result = requirements.value;
@@ -209,7 +228,7 @@ onMounted(fetchRequirements);
                 </div>
 
                 <!-- Results heading -->
-                <div class="mb-5 flex items-center justify-between">
+                <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-[#003D2D]">
                             {{ filter === 'mine' ? 'My Requirements' : 'Available Requirements' }}
@@ -222,12 +241,13 @@ onMounted(fetchRequirements);
                     </div>
 
                     <button
-                        v-if="search || selectedCategory !== 'All' || filter !== 'all'"
+                        v-if="hasActiveFilters"
                         type="button"
                         @click="search = ''; selectedCategory = null; filter = 'all'"
-                        class="cursor-pointer text-sm font-semibold text-[#D96B00] hover:text-[#003D2D]"
+                        class="inline-flex w-fit cursor-pointer items-center gap-2 rounded-xl border border-[#E5E9E3] bg-white px-4 py-2.5 text-sm font-semibold text-[#64766E] shadow-sm transition hover:border-[#FF7900] hover:bg-[#FFF7EF] hover:text-[#D96B00] active:scale-95"
                     >
-                        Clear filters
+                        <RotateCcw class="h-4 w-4" />
+                        Clear all filters
                     </button>
                 </div>
 

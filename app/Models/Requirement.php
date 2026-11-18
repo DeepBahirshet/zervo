@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Models;
@@ -14,7 +13,6 @@ class Requirement extends Model
         'user_id',
         'title',
         'category_id',
-        'category',
         'description',
         'budget',
         'location',
