@@ -34,7 +34,7 @@ const suggestions = [
     { label: 'Plumbing', icon: Wrench, prompt: 'I need plumbing services.' },
     { label: 'Electrical', icon: Zap, prompt: 'I need an electrician.' },
     { label: 'Painting', icon: Paintbrush, prompt: 'I need home painting services.' },
-    { label: 'Cleaning', icon: Sparkle, prompt: 'I need home cleaning services.' },
+    { label: 'Home cleaning', icon: Sparkle, prompt: 'I need home cleaning services.' },
 ];
 
 const quickActions = [
@@ -48,7 +48,7 @@ const messages = ref([
     {
         id: 1,
         role: 'assistant',
-        text: 'Hi! I’m Zervo. What do you need help with at home today?',
+        text: "Hey there! 👋 What can I help you with today? Tell me what you need fixed, installed, cleaned or improved at home. I'll help you find the right professional.",
         kind: 'text',
     },
 ]);
@@ -138,123 +138,94 @@ function useQuickAction(action) {
     <section class="overflow-hidden rounded-[26px] border border-[#DCE8E0] bg-white shadow-[0_25px_80px_rgba(7,59,58,0.16)]">
 
         <!-- Header -->
-        <div class="flex items-center justify-between border-b border-[#E9EFEB] px-5 py-5 sm:px-7">
-            <div class="flex items-center gap-4">
-                <div class="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-[#003D2D] text-[#FF9B38] shadow-lg shadow-emerald-950/15">
-                    <Bot :size="30" stroke-width="1.8" />
-                    <span class="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-[3px] border-white bg-emerald-500"></span>
+        <div class="flex items-center justify-between border-b border-[#E9EFEB] px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#003D2D] text-[#FF9B38] shadow-sm">
+                    <Bot :size="23" stroke-width="1.8" />
+
+                    <span class="absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-white bg-emerald-500"></span>
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-extrabold tracking-tight text-[#123E2E] sm:text-xl">
+                    <h3 class="text-base font-extrabold tracking-tight text-[#123E2E]">
                         Zervo AI Assistant
                     </h3>
-                    <p class="mt-1 flex items-center gap-2 text-sm font-medium text-gray-500">
-                        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                        Here to help with your home
+
+                    <p class="mt-0.5 flex items-center gap-1.5 text-xs text-gray-500">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
+                            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                        </span>
+                        Your home service companion
                     </p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-2 text-xs font-bold text-[#C66A00] sm:px-4 sm:text-sm">
-                <Sparkles :size="16" />
+            <div class="flex items-center gap-1.5 rounded-full border border-orange-100 bg-orange-50 px-2.5 py-1.5 text-xs font-bold text-[#C66A00]">
+                <Sparkles :size="14" />
                 AI Powered
             </div>
         </div>
 
+       
         <!-- Conversation -->
         <div
             ref="conversation"
-            class="h-[200px] space-y-6 overflow-y-auto bg-[#FAFCFA] px-5 py-6 sm:h-[240px] sm:px-7"
+            class="h-[190px] space-y-4 overflow-y-auto bg-gradient-to-b from-[#F5FAF6] to-[#FAFCFA] px-4 py-4 sm:h-[210px]"
         >
-            <div
-                v-for="message in messages"
-                :key="message.id"
-                class="flex gap-3"
-                :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
-            >
+            <TransitionGroup name="chat-message">
                 <div
-                    v-if="message.role === 'assistant'"
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E6F1EB] text-[#08744D]"
+                    v-for="message in messages"
+                    :key="message.id"
+                    class="flex items-end gap-2.5"
+                    :class="message.role === 'user' ? 'justify-end' : 'justify-start'"
                 >
-                    <Bot :size="23" />
-                </div>
-
-                <div class="min-w-0 max-w-[88%]">
+                    <!-- AI Avatar -->
                     <div
-                        class="rounded-2xl px-5 py-4 text-[15px] leading-7 sm:text-base"
+                        v-if="message.role === 'assistant'"
+                        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#003D2D] text-[#FF9B38] shadow-sm"
+                    >
+                        <Bot :size="19" />
+                    </div>
+
+                    <!-- Message -->
+                    <div
+                        class="max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-5 shadow-sm"
                         :class="message.role === 'user'
-                            ? 'rounded-br-sm bg-[#07563A] text-white shadow-md shadow-emerald-950/10'
-                            : 'rounded-bl-sm border border-[#E7EEE9] bg-white text-[#263B35] shadow-sm'"
+                            ? 'rounded-br-sm bg-gradient-to-br from-[#07563A] to-[#003D2D] text-white'
+                            : 'rounded-bl-sm border border-[#E4ECE6] bg-white text-[#263B35]'"
                     >
                         {{ message.text }}
                     </div>
 
-                    <!-- Provider cards -->
+                    <!-- User Avatar -->
                     <div
-                        v-if="message.kind === 'providers'"
-                        class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3"
+                        v-if="message.role === 'user'"
+                        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#FFEAD7] text-xs font-bold text-[#D96B00]"
                     >
-                        <article
-                            v-for="provider in providers"
-                            :key="provider.name"
-                            class="overflow-hidden rounded-2xl border border-[#E6ECE7] bg-white"
-                        >
-                            <div
-                                class="flex h-20 items-center justify-center"
-                                :style="{ backgroundColor: provider.color }"
-                            >
-                                <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-base font-extrabold text-[#073B3A]">
-                                    {{ provider.initials }}
-                                </div>
-                            </div>
-
-                            <div class="p-3">
-                                <h4 class="text-sm font-bold text-[#172B36]">
-                                    {{ provider.name }}
-                                </h4>
-
-                                <p class="mt-2 flex items-center gap-1 text-sm font-semibold text-[#9A6B13]">
-                                    <Star :size="15" class="fill-[#E9A008]" />
-                                    {{ provider.rating }}
-                                    <span class="font-normal text-gray-400">({{ provider.reviews }} reviews)</span>
-                                </p>
-
-                                <p class="mt-2 flex items-center gap-1 text-xs text-gray-500">
-                                    <MapPin :size="14" />
-                                    {{ provider.location }}
-                                </p>
-
-                                <button
-                                    type="button"
-                                    class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#EAF3EF] py-2.5 text-sm font-bold text-[#075B53] transition hover:bg-[#D6E9E1]"
-                                    @click="sendMessage(`I want to know more about ${provider.name}.`)"
-                                >
-                                    View profile
-                                    <ArrowUpRight :size="15" />
-                                </button>
-                            </div>
-                        </article>
+                        You
                     </div>
                 </div>
-            </div>
+            </TransitionGroup>
 
-            <!-- Loading -->
-            <div v-if="loading" class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#E6F1EB] text-[#08744D]">
-                    <Bot :size="22" />
+            <!-- Typing indicator -->
+            <div v-if="loading" class="flex items-end gap-2.5">
+                <div class="flex h-8 w-8 items-center justify-center rounded-xl bg-[#003D2D] text-[#FF9B38]">
+                    <Bot :size="19" />
                 </div>
 
-                <div class="flex items-center gap-1.5 rounded-2xl border border-[#E7EEE9] bg-white px-5 py-4">
+                <div class="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-[#E4ECE6] bg-white px-4 py-3 shadow-sm">
                     <span
                         v-for="n in 3"
                         :key="n"
                         class="h-2 w-2 animate-bounce rounded-full bg-[#08744D]"
-                        :style="{ animationDelay: `${n * 120}ms` }"
+                        :style="{ animationDelay: `${(n - 1) * 150}ms` }"
                     ></span>
+                    <span class="ml-1 text-xs text-gray-400">Zervo is typing</span>
                 </div>
             </div>
         </div>
+
 
         <!-- Quick suggestions -->
         <div class="border-t border-[#E9EFEB] bg-white px-5 py-5 sm:px-7">
@@ -277,7 +248,7 @@ function useQuickAction(action) {
                     :key="suggestion.label"
                     type="button"
                     :disabled="loading"
-                    class="group flex min-h-[46px] items-center gap-2 rounded-xl border border-[#E5EDE7] bg-[#FAFCFA] px-3 py-2 text-left transition duration-200 hover:border-[#F47700]/50 hover:bg-orange-50 disabled:opacity-50"
+                    class="group cursor-pointer flex min-h-[46px] items-center gap-2 rounded-xl border border-[#E5EDE7] bg-[#FAFCFA] px-3 py-2 text-left transition duration-200 hover:border-[#F47700]/50 hover:bg-orange-50 disabled:opacity-50"
                     @click="sendMessage(suggestion.prompt)"
                 >
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#E8F2EC] text-[#08744D] transition group-hover:bg-[#07563A] group-hover:text-white">
@@ -287,27 +258,6 @@ function useQuickAction(action) {
                     <span class="text-sm font-bold text-[#234238] sm:text-base">
                         {{ suggestion.label }}
                     </span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Quick actions -->
-        <div class="border-t border-[#EDF0EC] bg-[#FAFCFA] px-5 py-4 sm:px-7">
-            <p class="mb-3 text-xs font-bold uppercase tracking-wider text-gray-400">
-                Add more details
-            </p>
-
-            <div class="flex flex-wrap gap-2">
-                <button
-                    v-for="action in quickActions"
-                    :key="action.label"
-                    type="button"
-                    :disabled="loading"
-                    class="inline-flex items-center gap-1.5 rounded-full border border-[#E3EAE4] bg-white px-3 py-1.5 text-xs font-semibold text-[#456156] transition hover:border-[#F47700]/40 hover:bg-orange-50 disabled:opacity-50"
-                    @click="useQuickAction(action)"
-                >
-                    <component :is="action.icon" :size="16" />
-                    {{ action.label }}
                 </button>
             </div>
         </div>
@@ -339,8 +289,25 @@ function useQuickAction(action) {
             </div>
 
             <p class="mt-3 text-center text-xs text-gray-400">
-                Zervo AI helps you describe your requirement and find suitable professionals.
+                Just describe your problem. Zervo AI will guide you.
             </p>
         </form>
     </section>
 </template>
+
+<style scoped>
+/* Animate new chat messages */
+.chat-message-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.chat-message-enter-from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+}
+
+.chat-message-enter-to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+</style>

@@ -235,7 +235,7 @@
                     </div>
 
                     <!-- Existing interactive chat -->
-                    <div class="relative z-10" id="assistant">
+                    <div class="relative z-10 mx-auto w-full max-w-[540px] lg:ml-auto" id="assistant">
                         <div class="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-[#FF7900]/25 via-white/10 to-emerald-300/20 blur-3xl"></div>
 
                         <div class="relative rounded-[2rem] border border-white/50 bg-[#FFF8EF]/95 p-2 shadow-[0_30px_100px_rgba(0,0,0,0.3)] backdrop-blur-xl">
