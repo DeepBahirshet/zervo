@@ -78,64 +78,66 @@ const formatDate = (date) => {
                 v-if="requirements.length"
                 class="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
             >
-                <article
-                    v-for="requirement in requirements.slice(0, 4)"
-                    :key="requirement.id"
-                    class="group flex flex-col rounded-2xl border border-[#003D2D]/10 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#FF7900]/40 hover:shadow-xl"
-                >
-                    <!-- Card top -->
-                    <div class="mb-5 flex items-center justify-between gap-3">
-                        <span class="rounded-full bg-[#003D2D]/10 px-3 py-1.5 text-xs font-semibold text-[#003D2D]">
-                            {{ requirement.service_category?.name ?? 'Local Service' }}
-                        </span>
+                
+            <article
+                v-for="requirement in requirements.slice(0, 4)"
+                :key="requirement.id"
+                class="group flex min-w-0 flex-col rounded-2xl border border-[#003D2D]/10 bg-white p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#FF7900]/40 hover:shadow-xl sm:p-5 lg:p-6"
+            >
+                <!-- Card top -->
+                <div class="mb-4 flex flex-wrap items-center justify-between gap-2 sm:mb-5">
+                    <span class="max-w-[75%] truncate rounded-full bg-[#003D2D]/10 px-3 py-1.5 text-[11px] font-semibold text-[#003D2D] sm:text-xs">
+                        {{ requirement.service_category?.name ?? 'Local Service' }}
+                    </span>
 
-                        <span class="flex items-center gap-1.5 text-xs font-medium text-emerald-700">
-                            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-                            Open
+                    <span class="flex shrink-0 items-center gap-1.5 text-xs font-medium text-emerald-700">
+                        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                        Open
+                    </span>
+                </div>
+
+                <!-- Title -->
+                <h3 class="mb-2 line-clamp-2 text-base font-bold leading-snug text-gray-900 transition group-hover:text-[#003D2D] sm:mb-3 sm:text-lg">
+                    {{ requirement.title }}
+                </h3>
+
+                <!-- Description -->
+                <p class="mb-5 line-clamp-3 flex-grow text-[13px] leading-5 text-gray-500 sm:mb-6 sm:text-sm sm:leading-6">
+                    {{ requirement.description || 'A local service requirement is waiting for a suitable professional.' }}
+                </p>
+
+                <!-- Details -->
+                <div class="space-y-3 border-t border-gray-100 pt-4 sm:pt-5">
+                    <div class="flex min-w-0 items-center gap-2 text-xs text-gray-600 sm:text-sm">
+                        <MapPin class="h-4 w-4 shrink-0 text-[#FF7900]" />
+                        <span class="min-w-0 truncate">
+                            {{ requirement.location || 'Location not specified' }}
                         </span>
                     </div>
 
-                    <!-- Title -->
-                    <h3 class="mb-3 line-clamp-2 text-lg font-bold leading-snug text-gray-900 transition group-hover:text-[#003D2D]">
-                        {{ requirement.title }}
-                    </h3>
-
-                    <!-- Description -->
-                    <p class="mb-6 line-clamp-3 flex-grow text-sm leading-6 text-gray-500">
-                        {{ requirement.description || 'A local service requirement is waiting for a suitable professional.' }}
-                    </p>
-
-                    <!-- Details -->
-                    <div class="space-y-3 border-t border-gray-100 pt-5">
-                        <div class="flex items-center gap-2 text-sm text-gray-600">
-                            <MapPin class="h-4 w-4 shrink-0 text-[#FF7900]" />
-                            <span class="truncate">
-                                {{ requirement.location || 'Location not specified' }}
-                            </span>
-                        </div>
-
-                        <div class="flex items-center gap-2 text-sm text-gray-600">
-                            <Wallet class="h-4 w-4 shrink-0 text-[#FF7900]" />
-                            <span>{{ formatBudget(requirement) }}</span>
-                        </div>
-
-                        <div
-                            v-if="requirement.created_at"
-                            class="flex items-center gap-2 text-sm text-gray-500"
-                        >
-                            <Clock3 class="h-4 w-4 shrink-0" />
-                            <span>Posted {{ formatDate(requirement.created_at) }}</span>
-                        </div>
+                    <div class="flex items-center gap-2 text-xs text-gray-600 sm:text-sm">
+                        <Wallet class="h-4 w-4 shrink-0 text-[#FF7900]" />
+                        <span class="min-w-0 truncate">{{ formatBudget(requirement) }}</span>
                     </div>
 
-                    <!-- Action -->
-                    <Link
-                        :href="`/requirements/${requirement.id}`"
-                        class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#003D2D] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#FF7900]"
+                    <div
+                        v-if="requirement.created_at"
+                        class="flex items-center gap-2 text-xs text-gray-500 sm:text-sm"
                     >
-                        View Requirement
-                    </Link>
-                </article>
+                        <Clock3 class="h-4 w-4 shrink-0" />
+                        <span>Posted {{ formatDate(requirement.created_at) }}</span>
+                    </div>
+                </div>
+
+                <!-- Action -->
+                <Link
+                    :href="`/requirements/${requirement.id}`"
+                    class="mt-5 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#003D2D] px-4 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-[#FF7900] active:scale-[0.98] sm:mt-6"
+                >
+                    View Requirement
+                </Link>
+            </article>
+
             </div>
 
             <!-- Empty state -->
