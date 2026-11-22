@@ -1,5 +1,5 @@
 
-<script setup>
+<!-- <script setup>
 import { ref, nextTick, watch } from 'vue';
 import {
     Bot,
@@ -131,6 +131,128 @@ async function sendMessage(value = input.value) {
 
 function useQuickAction(action) {
     sendMessage(action.prompt);
+}
+</script> -->
+
+<script setup>
+import { ref, nextTick, watch } from 'vue';
+import axios from 'axios';
+
+import {
+    Bot,
+    Sparkles,
+    Wrench,
+    Paintbrush,
+    Zap,
+    Sparkle,
+    Send,
+    MessageCircle,
+} from 'lucide-vue-next';
+
+const props = defineProps({
+    initialService: {
+        type: String,
+        default: '',
+    },
+});
+
+// FastAPI configuration
+const AI_API_URL =
+    import.meta.env.VITE_AI_API_URL || 'http://127.0.0.1:8001';
+
+const input = ref('');
+const loading = ref(false);
+const conversation = ref(null);
+
+const suggestions = [
+    { label: 'Plumbing', icon: Wrench, prompt: 'I need plumbing services.' },
+    { label: 'Electrical', icon: Zap, prompt: 'I need an electrician.' },
+    { label: 'Painting', icon: Paintbrush, prompt: 'I need home painting services.' },
+    { label: 'Home cleaning', icon: Sparkle, prompt: 'I need home cleaning services.' },
+];
+
+const messages = ref([
+    {
+        id: 1,
+        role: 'assistant',
+        text: "Hey there! 👋 What can I help you with today? Tell me what you need fixed, installed, cleaned or improved at home. I'll help you find the right professional.",
+        kind: 'text',
+    },
+]);
+
+watch(
+    () => props.initialService,
+    (service) => {
+        if (!service) return;
+
+        sendMessage(`I need ${service.toLowerCase()} services.`);
+    }
+);
+
+async function scrollToBottom() {
+    await nextTick();
+
+    conversation.value?.scrollTo({
+        top: conversation.value.scrollHeight,
+        behavior: 'smooth',
+    });
+}
+
+async function sendMessage(value = input.value) {
+    const text = value.trim();
+
+    if (!text || loading.value) return;
+
+    // Display user's message immediately
+    messages.value.push({
+        id: Date.now(),
+        role: 'user',
+        text,
+        kind: 'text',
+    });
+
+    input.value = '';
+    loading.value = true;
+
+    await scrollToBottom();
+
+    try {
+        // Send message to FastAPI
+        const response = await axios.post(
+            `${AI_API_URL}/api/v1/llm/chat`,
+            {
+                prompt: text,
+            }
+        );
+
+        // Display Gemini's response
+        messages.value.push({
+            id: Date.now() + 1,
+            role: 'assistant',
+            text: response.data.response,
+            kind: 'text',
+        });
+
+    } catch (error) {
+        console.error('Zervo AI error:', error);
+
+        const errorMessage =
+            error.response?.data?.detail ||
+            'Sorry, I am having trouble connecting right now. Please try again.';
+
+        messages.value.push({
+            id: Date.now() + 1,
+            role: 'assistant',
+            text: typeof errorMessage === 'string'
+                ? errorMessage
+                : 'Something went wrong. Please try again.',
+            kind: 'text',
+        });
+
+    } finally {
+        loading.value = false;
+        await scrollToBottom();
+    }
 }
 </script>
 
