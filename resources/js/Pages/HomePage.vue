@@ -2,6 +2,7 @@
     <script setup>
     import { Head } from '@inertiajs/vue3';
     import Header from '@/Components/Layouts/Header.vue';
+    import Footer from '@/Components/Layouts/Footer.vue';
     import { ref } from 'vue';
     import ZervoChat from '@/Components/AI/ZervoChat.vue';
     import FeaturedRequirements from '@/Components/Requirements/FeaturedRequirements.vue';
@@ -23,11 +24,7 @@
         Star,
         MapPin,
         IndianRupee,
-        ArrowRight,
         Clock3,
-        Instagram,
-        Linkedin,
-        Heart,
         CheckCircle2,
     } from 'lucide-vue-next';
 
@@ -93,33 +90,6 @@
             icon: IndianRupee,
             title: 'Transparent Pricing',
             description: 'Compare proposals and choose what fits your budget.',
-        },
-    ];
-
-    const footerGroups = [
-        {
-            title: 'Explore',
-            links: [
-                { label: 'Home', href: '/' },
-                { label: 'Services', href: '#services' },
-                { label: 'How it works', href: '#how-it-works' },
-            ],
-        },
-        {
-            title: 'Account',
-            links: [
-                { label: 'Sign in', href: '/login' },
-                { label: 'Create account', href: '/register' },
-                { label: 'Become a provider', href: '/register' },
-            ],
-        },
-        {
-            title: 'Support',
-            links: [
-                { label: 'Contact us', href: 'mailto:support@zervo.in' },
-                { label: 'Help center', href: '#' },
-                { label: 'Privacy policy', href: '#' },
-            ],
         },
     ];
 
@@ -440,70 +410,7 @@
                 </div>
             </section>
 
-            <!-- FOOTER -->
-            <footer class="relative overflow-hidden bg-[#002F25] text-white">
-                <div class="pointer-events-none absolute -right-20 -top-40 h-96 w-96 rounded-full bg-[#087E55]/20 blur-[100px]"></div>
-
-                <div class="relative mx-auto max-w-[1400px] px-6 pb-8 pt-16 lg:px-12">
-                    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-
-                        <div>
-                            <a href="/" class="text-4xl font-extrabold tracking-tight">
-                                <span class="text-[#FF7900]">Z</span>ervo<span class="text-[#FF7900]">.</span>
-                            </a>
-
-                            <p class="mt-5 max-w-sm leading-7 text-white/60">
-                                Your local home services marketplace.
-                                Find trusted professionals and get your
-                                everyday home needs taken care of.
-                            </p>
-
-                            <div class="mt-6 flex gap-3">
-                                <a
-                                    href="#"
-                                    aria-label="Instagram"
-                                    class="social-link"
-                                >
-                                    <Instagram :size="18" />
-                                </a>
-
-                                <a
-                                    href="#"
-                                    aria-label="LinkedIn"
-                                    class="social-link"
-                                >
-                                    <Linkedin :size="18" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <div v-for="group in footerGroups" :key="group.title">
-                            <h3 class="font-bold text-white">{{ group.title }}</h3>
-
-                            <ul class="mt-6 space-y-4">
-                                <li v-for="link in group.links" :key="link.label">
-                                    <a
-                                        :href="link.href"
-                                        class="text-sm text-white/60 transition hover:text-[#FF9B38]"
-                                    >
-                                        {{ link.label }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="mt-16 flex flex-col justify-between gap-4 border-t border-white/10 pt-7 text-sm text-white/50 sm:flex-row">
-                        <p>© {{ new Date().getFullYear() }} Zervo. All rights reserved.</p>
-
-                        <p class="inline-flex items-center gap-1.5">
-                            Made with
-                            <Heart :size="14" class="fill-[#FF7900] text-[#FF7900]" />
-                            in Kolhapur.
-                        </p>
-                    </div>
-                </div>
-            </footer>
+        <Footer />
         </div>
     </template>
 
